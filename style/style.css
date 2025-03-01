@@ -1,0 +1,43 @@
+.hidden{
+    display: none;
+    visibility: hidden;
+}
+
+.marginblock{
+    margin: 10px 10px 10px 10px;
+}
+
+.container-map {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px; 
+    padding: .5rem;
+    border-radius: 10px;
+    box-shadow: 0px 5px 10px 0px rgba(17, 12, 46, 0.8);
+    flex-basis: 275px;
+    flex-grow: 1;
+    min-height: 300px;
+    background-color: white;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.map-disabled{
+    color: grey;
+    background-color: grey;
+}
+
+.center{
+    align-items: center;
+}
+
+.card-body img {
+    width: 50%;
+    height: 35%
+}
+
+.card-margin{
+    margin-bottom: 5px;
+}
