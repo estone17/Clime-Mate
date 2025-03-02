@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale">
+    <title>Weather Alerts</title>
+    <link rel="stylesheet" href="weatherAlerts-styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Weather Alerts</h1>
+
+        <!--Toggle for enabling/disabling alerts-->
+        <div class="toggle-container">
+            <label for="alertToggle">Enable Weather Alerts:</label>
+            <label class="toggle-switch">
+                <input type="checkbox" id="alert-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+         <!--Alert Messages-->
+         <div id="alertMessages"></div>
+    </div>
+    <script src="weather-alerts.js"></script>
+</body>
+</html>

@@ -23,6 +23,9 @@
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="#">Home</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="weatherAlerts.html" id="settingsLink">Weather Alerts</a>
+              </li>
             </ul>
           </div>
         </div>
@@ -69,6 +72,32 @@
             </div>
           </div> -->
     </div>
+
+    <script>
+      window.onload = function() {
+        const savedLat = localStorage.getItem('latitude');
+        const saveLon = localStorage.getItem('longitude');
+
+        if (savedLat && savedLon) {
+          document.getElementById('lat').value=savedLat;
+          document.getElementById('lon').value=saveLon;
+        }
+      };
+
+      document.getElementById('searchBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        const lat = document.getElementById('lat').value;
+        const lon = document.getElementById('lon').value;
+
+        if (lat && lon) {
+          //Store the values inside localStorage
+          localStorage.setItem('latitude', lat);
+          localStorage.setItem('longitude',lon);
+        } else {
+          document.getElementById('weather-alert').classList.remove('hidden');
+        }
+      });
+      </script>
 
 
   </body>
