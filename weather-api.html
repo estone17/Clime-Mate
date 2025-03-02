@@ -76,11 +76,11 @@
     <script>
       window.onload = function() {
         const savedLat = localStorage.getItem('latitude');
-        const saveLon = localStorage.getItem('longitude');
+        const savedLon = localStorage.getItem('longitude');
 
         if (savedLat && savedLon) {
-          document.getElementById('lat').value=savedLat;
-          document.getElementById('lon').value=saveLon;
+          document.getElementById('lat').value = savedLat;
+          document.getElementById('lon').value = savedLon;
         }
       };
 
@@ -92,7 +92,7 @@
         if (lat && lon) {
           //Store the values inside localStorage
           localStorage.setItem('latitude', lat);
-          localStorage.setItem('longitude',lon);
+          localStorage.setItem('longitude', lon);
         } else {
           document.getElementById('weather-alert').classList.remove('hidden');
         }

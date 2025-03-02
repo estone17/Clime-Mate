@@ -13,21 +13,6 @@ function requestNotificationPermission() {
     }
 }
 
-
-//Testing for weather alerts before api key
-/*async function getWeatherAlerts() {
-    console.log("Getting weather alerts...");
-
-    const fakeData = {
-        alerts: [
-            {event: "Severe Thunderstorm Warning"}
-        ]
-    };
-
-    handleWeatherAlerts(fakeData);
-}*/
-
-
 //Fetches Severe Weather Data from Weather API based on user input
 async function getWeatherAlerts(lat, lon) {
     console.log("Getting weather alerts for:", lat, lon);
@@ -37,7 +22,7 @@ async function getWeatherAlerts(lat, lon) {
         return;
     }
 
-    const alertURL = `https://api.open-meteo.com/v1/warnings?latitude=${lat}&longitude=${lon}`;
+    const alertURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=weathercode`;
 
     try {
         const response = await fetch(alertURL);
@@ -58,25 +43,38 @@ function startPeriodicAlertCheck(lat, lon, interval = 60000) {
 
 // Processes and displays weather alerts
 function handleWeatherAlerts(data) {
+    console.log("Handling weather alerts:", data);
     const alertBox = document.getElementById("alertMessages");
     alertBox.innerHTML = ""; // Clear previous messages
 
     if (!data || !data.alerts || data.alerts.length === 0) {
-        displayAlertMessage("There are currently no weather alerts.");
+        const noAlertsMessage = "There are currently no weather alerts.";
+        displayAlertMessage(noAlertsMessage);
+        showNotification(noAlertsMessage);
         return;
     }
+
+    const lastAlert = localStorage.getItem("lastWeatherAlert");
+    console.log("Last alert from localStorage:", lastAlert);
     
     data.alerts.forEach(alert => {
         const alertMessage = alert.event; //Example: "Severe Thunderstorm Warning"
         const alertDescription = alert.description || "No description available";
-        const alertStart = new Date(alert.start * 1000).toLocaleString(); "Unknown start time";
-        const alertEnd = new Date(alert.end * 1000).toLocaleString(); "Unknown end time";
+        const alertStart = alert.start ? new Date(alert.start * 1000).toLocaleString() : "Unknown start time";
+        const alertEnd = alert.end ? new Date(alert.end * 1000).toLocaleString() : "Unknown end time";
 
         // Determine severity based on alert message
         const isSevere = /warning|storm|hurricane|tornado|severe/i.test(alertMessage);
         const formattedAlert = `${isSevere ? "Severe Weather Alert" : "Weather Alert"}: ${alertMessage} Start: ${alertStart} End: ${alertEnd} Description: ${alertDescription}`;
+        console.log("Formatted alert:", formattedAlert);
+
+        //Check if this is a duplicate alert
+        if (formattedAlert !== lastAlert) { 
+            localStorage.setItem("lastWeatherAlert", formattedAlert);
+        }
 
         //Show the formatted alert in both the UI and as a browser notification
+        console.log("Displaying alert:", formattedAlert);
         showNotification(formattedAlert);
         displayAlertMessage(formattedAlert);
     });
@@ -87,50 +85,65 @@ function handleWeatherAlerts(data) {
 //Saves the users preferences for alerts
 document.addEventListener("DOMContentLoaded", () => {
     const toggle = document.getElementById("alert-toggle");
-    toggle.checked = localStorage.getItem("weatherAlerts") == "true";
+    toggle.checked = JSON.parse(localStorage.getItem("weatherAlerts") || "false");
     toggle.addEventListener("change", ()=> {
         localStorage.setItem("weatherAlerts", toggle.checked);  
     });
 
     //Retrieve saved latitude and logitude from localStorage
-    const savedLat = localStorage.getItem('latitude');
-    const savedLon = localStorage.getItem('longitude');
+    let savedLat = localStorage.getItem('latitude');
+    let savedLon = localStorage.getItem('longitude');
 
-    if (savedLat && savedLon) {
-        //Fetch weather alerts based on saved location
-        if(toggle.checked) {
+    if (!savedLat || !savedLon) {
+        //If there is no saved location, try to get user's current location
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                savedLat = position.coords.latitude;
+                savedLon = position.coords.longitude;
+
+                localStorage.setItem('latitude', savedLat);
+                localStorage.setItem('longitude', savedLon);
+
+                //Fetch alerts if the toggle is enabled
+                if (toggle.checked) {
+                    getWeatherAlerts(savedLat, savedLon);
+                    startPeriodicAlertCheck(savedLat, savedLon);
+                }
+            }, error => {
+                console.error("Error getting location:", error);
+                document.getElementById('alertMessages').innerHTML = "Error getting location. Please enter a latitude and longitude.";
+            });
+        } else {
+            document.getElementById('alertMessages').innerHTML = "Geolocation is not supported. Please enter a latitude and longitude.";
+        }
+    } else {
+        //Fetch alerts using saved location
+        if (toggle.checked) {
             getWeatherAlerts(savedLat, savedLon);
             startPeriodicAlertCheck(savedLat, savedLon);
         } else {
-            document.getElementById('alertMessages').innerHTML = "Weather alerts are turned off.";
+            document.getElementById('alertMessages').innerHTML = "Weather alerts are disabled. Enable alerts to receive notifications.";
         }
-    } else {
-        document.getElementById('alertMessages').innerHTML = "No location saved. Please visit the Home page to set your location.";
     }
-
-    //Get weather alerts when user searches for a location
-    document.getElementById("searchBtn").addEventListener("click", () => {
-        const lat = document.getElementById("lat").value;
-        const lon = document.getElementById("lon").value;
-
-        if (toggle.checked)  {
-            getWeatherAlerts(lat, lon);
-            startPeriodicAlertCheck(lat, lon);
-        }
-    });
 });
-
 
 //Testing & Debugging
 //Shows a browser notification if allowed
 function showNotification(message) {
     if (Notification.permission === "granted") {
         new Notification("Weather Alert", { body: message });
+    } else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then(permission => {
+            if (permission === "granted") {
+                new Notification("Weather Alert", { body: message });
+            }
+        });
     }
 }
 
 //Will display alert message inside the webpage
 function displayAlertMessage(message) {
+    console.log("Displaying alert message:", message);
     const alertBox = document.getElementById("alertMessages");
     const alertDiv = document.createElement("div");
     alertDiv.classList.add("notification");
