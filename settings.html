@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Cilme-Mate</title>
+    <link rel="stylesheet" href="style/style.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <!-- Make "Cilme-Mate" clickable to go back to home page -->
+            <a href="index.html">
+                <h1>Cilme-Mate</h1>
+            </a>
+            <nav>
+                <ul>
+                    <!-- The cog icon is not needed here, it's already handled by the header -->
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Settings Content -->
+    <div class="settings-container">
+        <h2>Cilme-Mate Settings</h2>
+
+        <div class="settings">
+            <h3>Select Theme:</h3>
+            <select id="theme-selector" onchange="switchTheme(this.value)">
+                <option value="light">Light Theme</option>
+                <option value="dark">Dark Theme</option>
+                <option value="custom">Custom Theme</option>
+            </select>
+        </div>
+
+        <!-- Custom Theme Settings (only visible when 'Custom Theme' is selected) -->
+        <div class="custom-theme-settings" style="display: none;">
+            <h3>Customize Your Theme</h3>
+            <label for="bg-color">Background Color:</label>
+            <input type="color" id="bg-color" onchange="updateCustomTheme()">
+            <br>
+
+            <label for="text-color">Text Color:</label>
+            <input type="color" id="text-color" onchange="updateCustomTheme()">
+        </div>
+
+        <div class="view-toggle">
+            <h3>Select View:</h3>
+            <select id="view-selector" onchange="switchView(this.value)">
+                <option value="compact">Compact View</option>
+                <option value="detailed">Detailed View</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <p>&copy; 2025 Cilme-Mate</p>
+        </div>
+    </footer>
+
+    <script src="javascript/theme.js"></script>
+</body>
+</html>
