@@ -90,9 +90,14 @@
         const lon = document.getElementById('lon').value;
 
         if (lat && lon) {
-          //Store the values inside localStorage
+          // Store the values inside localStorage
           localStorage.setItem('latitude', lat);
           localStorage.setItem('longitude', lon);
+          
+          // Example of formatting date and time
+          const date = new Date();
+          const formattedDate = date.toLocaleString('en-US', { timeZone: 'America/New_York' });
+          console.log(formattedDate); // Replace with actual usage
         } else {
           document.getElementById('weather-alert').classList.remove('hidden');
         }

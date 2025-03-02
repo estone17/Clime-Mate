@@ -22,7 +22,7 @@ async function getWeatherAlerts(lat, lon) {
         return;
     }
 
-    const alertURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=weathercode`;
+    const alertURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,rain_sum,snowfall_sum,sunrise,sunset&timezone=auto&forecast_days=7&alerts=true`;
 
     try {
         const response = await fetch(alertURL);
