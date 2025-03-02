@@ -61,23 +61,25 @@ function handleWeatherAlerts(data) {
     const alertBox = document.getElementById("alertMessages");
     alertBox.innerHTML = ""; // Clear previous messages
 
-    if (data.alerts && data.alerts.length > 0) {
-        data.alerts.forEach(alert => {
-            const alertMessage = alert.event;
-            const weatherCode = alert.weather_code;
-
-            // Determine severity based on weather_code
-            if (weatherCode >= 200 && weatherCode < 300) {
-                showNotification("Severe Weather Alert: " + alertMessage);
-                displayAlertMessage("Severe Weather Alert: " + alertMessage);
-            } else {
-                showNotification("Normal: " + alertMessage);
-                displayAlertMessage("Normal: " + alertMessage);
-            }
-        });
-    } else {
+    if (!data || !data.alerts || data.alerts.length === 0) {
         displayAlertMessage("There are currently no weather alerts.");
+        return;
     }
+    
+    data.alerts.forEach(alert => {
+        const alertMessage = alert.event; //Example: "Severe Thunderstorm Warning"
+        const alertDescription = alert.description || "No description available";
+        const alertStart = new Date(alert.start * 1000).toLocaleString(); "Unknown start time";
+        const alertEnd = new Date(alert.end * 1000).toLocaleString(); "Unknown end time";
+
+        // Determine severity based on alert message
+        const isSevere = /warning|storm|hurricane|tornado|severe/i.test(alertMessage);
+        const formattedAlert = `${isSevere ? "Severe Weather Alert" : "Weather Alert"}: ${alertMessage} Start: ${alertStart} End: ${alertEnd} Description: ${alertDescription}`;
+
+        //Show the formatted alert in both the UI and as a browser notification
+        showNotification(formattedAlert);
+        displayAlertMessage(formattedAlert);
+    });
 }
 
 
@@ -123,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
 //Shows a browser notification if allowed
 function showNotification(message) {
     if (Notification.permission === "granted") {
-        new Notification("Weather Alert", {body: message});
+        new Notification("Weather Alert", { body: message });
     }
 }
 
@@ -132,10 +134,9 @@ function displayAlertMessage(message) {
     const alertBox = document.getElementById("alertMessages");
     const alertDiv = document.createElement("div");
     alertDiv.classList.add("notification");
-    alertDiv.textContent=message;
+    alertDiv.textContent = message;
     alertBox.appendChild(alertDiv);
 }
 
 //Request notification permission when page loads
 requestNotificationPermission();
-
