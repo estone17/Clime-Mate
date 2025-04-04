@@ -198,3 +198,27 @@ button, select, input[type="color"] {
 .card-margin{
     margin-bottom: 5px;
 }
+
+nav{
+    margin-bottom: 20px;
+}
+
+footer{
+    margin-top: 20px;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+iframe {
+
+    width: 98%;
+    height: 80%;
+    border: none;
+    border-radius: 16px;
+}
