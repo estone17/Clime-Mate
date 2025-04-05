@@ -39,44 +39,9 @@
     </nav>
 
 
-    <!-- weather alerts -->
-
-
-    <div class="container">
-        <h1>Weather Alerts</h1>
-
-        <!--Toggle for enabling/disabling alerts-->
-        <div class="toggle-container">
-            <label for="alertToggle">Enable Weather Alerts:</label>
-            <label class="toggle-switch">
-                <input type="checkbox" id="alert-toggle">
-                <span class="slider"></span>
-            </label>
-        </div>
-
-        <!--Alert Messages-->
-        <div id="alertMessages"></div>
-    </div>
-
-    <hr>
-
     <!--alert message for if there is no location selected-->
 
-    <!--     
-        <div class="dropdown">
-            
-            <form class="d-flex marginblock" role="search" data-bs-toggle="dropdown">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchbar">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>        
-            
-            <ul class="dropdown-menu w-100">
-                <li><a class="dropdown-item" href="#" id="drop1">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-        </div>
-    -->
+    
 
     <form class="d-flex marginblock" role="search" data-bs-toggle="dropdown">
         <input class="form-control me-2" type="search" placeholder="Latitude" aria-label="Search" id="lat">
@@ -88,7 +53,9 @@
         Please fill in the location below to get weather data
     </div>
 
-    <div class="container-map map-disabled" id="weather-container">
+    
+
+    <div class="container-map map-disabled hidden" id="today-container">
         <!-- <div class="card text-center" style="width: 12rem;">
             <div class="card-body">
               <u><h5 class="card-title">2025-03-01</h5></u>
@@ -100,6 +67,10 @@
               <p class="card-text card-margin">Sunset: 10:00pm</p>
             </div>
           </div> -->
+    </div>
+
+    <div class="container-map map-disabled" id="weather-container">
+
     </div>
 
     <script>
@@ -132,6 +103,27 @@
         }
       });
       </script>
+
+      <hr>
+
+        <!-- weather alerts -->
+
+
+        <div class="container">
+            <h1>Weather Alerts</h1>
+
+            <!--Toggle for enabling/disabling alerts-->
+            <div class="toggle-container">
+                <label for="alertToggle">Enable Weather Alerts:</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="alert-toggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <!--Alert Messages-->
+            <div id="alertMessages"></div>
+        </div>
 
       <hr>
 

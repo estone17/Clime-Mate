@@ -22,6 +22,8 @@ const latitude = document.getElementById('lat');
 const longitude = document.getElementById('lon');
 const searchBtn = document.getElementById('searchBtn');
 const weatherContainer = document.getElementById('weather-container');
+const todayContainer = document.getElementById('today-container');
+
 
 
 searchBtn.addEventListener('click', async function(event){
@@ -37,10 +39,12 @@ searchBtn.addEventListener('click', async function(event){
    
    if(weatherData === null){
         weatherAlert.classList.remove('hidden');
+        todayContainer.classList.add('hidden');
         return;
    }
 
    weatherAlert.classList.add('hidden');
+   todayContainer.classList.remove('hidden');
 
    weatherContainer.innerHTML = '';
 
@@ -48,24 +52,50 @@ searchBtn.addEventListener('click', async function(event){
     newHigh = (parseInt(weatherData.daily.temperature_2m_max[i])* 9/5) + 32;
     newLow = (parseInt(weatherData.daily.temperature_2m_min[i])* 9/5) + 32;
 
+
     if(weatherData.daily.snowfall_sum[i] > 10){
+        if(i == 0){
+            const todayCard = createTodayWeatherCard(weatherData.daily.time[0],"images/icons/snowflake.png",newHigh,newLow,weatherData.daily.rain_sum[0],weatherData.daily.snowfall_sum[0],weatherData.daily.sunrise[0].split("T")[1],weatherData.daily.sunset[0].split("T")[1]);
+            todayContainer.appendChild(todayCard)
+        }
+
         weatherContainer.appendChild(createWeatherCard(weatherData.daily.time[i], "images/icons/snowflake.png", newHigh, newLow, weatherData.daily.rain_sum[i] , weatherData.daily.snowfall_sum[i], weatherData.daily.sunrise[i].split('T')[1], weatherData.daily.sunset[i].split('T')[1]))
         console.log("test 1");
 
     }
     else if(weatherData.daily.rain_sum[i] > 40){
+        if(i == 0){
+            const todayCard = createTodayWeatherCard(weatherData.daily.time[0],"images/icons/rainy.png",newHigh,newLow,weatherData.daily.rain_sum[0],weatherData.daily.snowfall_sum[0],weatherData.daily.sunrise[0].split("T")[1],weatherData.daily.sunset[0].split("T")[1]);
+            todayContainer.appendChild(todayCard)
+        }
+
         weatherContainer.appendChild(createWeatherCard(weatherData.daily.time[i], "images/icons/rainy.png", newHigh, newLow, weatherData.daily.rain_sum[i] , weatherData.daily.snowfall_sum[i], weatherData.daily.sunrise[i].split('T')[1], weatherData.daily.sunset[i].split('T')[1]))
         console.log("test 2");
     }
     else if (newHigh >= 70){
+        if(i == 0){
+            const todayCard = createTodayWeatherCard(weatherData.daily.time[0],"images/icons/sun.png",newHigh,newLow,weatherData.daily.rain_sum[0],weatherData.daily.snowfall_sum[0],weatherData.daily.sunrise[0].split("T")[1],weatherData.daily.sunset[0].split("T")[1]);
+            todayContainer.appendChild(todayCard)
+        }
+
         weatherContainer.appendChild(createWeatherCard(weatherData.daily.time[i], "images/icons/sun.png", newHigh, newLow, weatherData.daily.rain_sum[i] , weatherData.daily.snowfall_sum[i], weatherData.daily.sunrise[i].split('T')[1], weatherData.daily.sunset[i].split('T')[1]))
         console.log("test 3");
     }
     else if(newHigh < 70 && newHigh > 40){
+        if(i == 0){
+            const todayCard = createTodayWeatherCard(weatherData.daily.time[0],"images/icons/semi-cloudy-day.png",newHigh,newLow,weatherData.daily.rain_sum[0],weatherData.daily.snowfall_sum[0],weatherData.daily.sunrise[0].split("T")[1],weatherData.daily.sunset[0].split("T")[1]);
+            todayContainer.appendChild(todayCard)
+        }
+
         weatherContainer.appendChild(createWeatherCard(weatherData.daily.time[i], "images/icons/semi-cloudy-day.png", newHigh, newLow, weatherData.daily.rain_sum[i] , weatherData.daily.snowfall_sum[i], weatherData.daily.sunrise[i].split('T')[1], weatherData.daily.sunset[i].split('T')[1]))
         console.log("test 4");
     }
     else{
+        if(i == 0){
+            const todayCard = createTodayWeatherCard(weatherData.daily.time[0],"images/icons/cloudy-day.png",newHigh,newLow,weatherData.daily.rain_sum[0],weatherData.daily.snowfall_sum[0],weatherData.daily.sunrise[0].split("T")[1],weatherData.daily.sunset[0].split("T")[1]);
+            todayContainer.insertBefore(todayCard, weatherContainer);
+        }
+
         weatherContainer.appendChild(createWeatherCard(weatherData.daily.time[i], "images/icons/cloudy-day.png", newHigh, newLow, weatherData.daily.rain_sum[i] , weatherData.daily.snowfall_sum[i], weatherData.daily.sunrise[i].split('T')[1], weatherData.daily.sunset[i].split('T')[1]))
         console.log("test 5");
     }
@@ -167,6 +197,59 @@ function createWeatherCard(date, iconSrc, highTemp, lowTemp, rainSum, snowSum, s
     return card;
 }
 
+
+
+
+function createTodayWeatherCard(date, iconSrc, highTemp, lowTemp, rainSum, snowSum, sunrise, sunset) {
+    const card = document.createElement("div");
+    card.className = "card text-center mb-3";
+    card.style.width = "100%";
+    card.style.backgroundColor = "#f0f8ff";
+    card.style.border = "2px solid #007bff";
+    card.style.boxShadow = "0 4px 8px rgba(0,0,0,0.1)";
+    card.style.padding = "1rem";
+
+    const cardBody = document.createElement("div");
+    cardBody.className = "card-body";
+
+    const title = document.createElement("h4");
+    title.className = "card-title font-weight-bold";
+    title.innerText = `Today's Weather – ${date}`;
+
+    const icon = document.createElement("img");
+    icon.src = iconSrc;
+    icon.alt = "Weather Icon";
+    icon.style.width = "80px";
+    icon.style.height = "80px";
+
+    const temp = document.createElement("p");
+    temp.className = "card-text";
+    temp.innerHTML = `<strong>High:</strong> ${highTemp}°F | <strong>Low:</strong> ${lowTemp}°F`;
+
+    const rain = document.createElement("p");
+    rain.innerText = `Rain: ${rainSum}%`;
+
+    const snow = document.createElement("p");
+    snow.innerText = `Snow: ${snowSum}%`;
+
+    const rise = document.createElement("p");
+    rise.innerText = `Sunrise: ${sunrise}`;
+
+    const set = document.createElement("p");
+    set.innerText = `Sunset: ${sunset}`;
+
+    cardBody.appendChild(title);
+    cardBody.appendChild(icon);
+    cardBody.appendChild(temp);
+    cardBody.appendChild(rain);
+    cardBody.appendChild(snow);
+    cardBody.appendChild(rise);
+    cardBody.appendChild(set);
+
+    card.appendChild(cardBody);
+
+    return card;
+}
 
 
 
