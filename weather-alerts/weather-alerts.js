@@ -48,7 +48,7 @@ function handleWeatherAlerts(data) {
     alertBox.innerHTML = ""; // Clear previous messages
 
     if (!data || !data.alerts || data.alerts.length === 0) {
-        const noAlertsMessage = "There are currently no weather alerts.";
+        const noAlertsMessage = typeof translateText === 'function' ? translateText('noAlerts') : "There are currently no weather alerts.";
         displayAlertMessage(noAlertsMessage);
         showNotification(noAlertsMessage);
         return;
@@ -65,7 +65,18 @@ function handleWeatherAlerts(data) {
 
         // Determine severity based on alert message
         const isSevere = /warning|storm|hurricane|tornado|severe/i.test(alertMessage);
-        const formattedAlert = `${isSevere ? "Severe Weather Alert" : "Weather Alert"}: ${alertMessage} Start: ${alertStart} End: ${alertEnd} Description: ${alertDescription}`;
+        
+        // Get translated alert type
+        const alertType = typeof translateText === 'function' 
+            ? (isSevere ? translateText('severeWeatherAlert') : translateText('weatherAlert'))
+            : (isSevere ? "Severe Weather Alert" : "Weather Alert");
+            
+        // Get translated labels
+        const startLabel = typeof translateText === 'function' ? translateText('start') : "Start";
+        const endLabel = typeof translateText === 'function' ? translateText('end') : "End";
+        const descLabel = typeof translateText === 'function' ? translateText('description') : "Description";
+        
+        const formattedAlert = `${alertType}: ${alertMessage} ${startLabel}: ${alertStart} ${endLabel}: ${alertEnd} ${descLabel}: ${alertDescription}`;
         console.log("Formatted alert:", formattedAlert);
 
         //Check if this is a duplicate alert
@@ -111,10 +122,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }, error => {
                 console.error("Error getting location:", error);
-                document.getElementById('alertMessages').innerHTML = "Error getting location. Please enter a latitude and longitude.";
+                document.getElementById('alertMessages').innerHTML = typeof translateText === 'function' 
+                ? translateText('errorGettingLocation') 
+                : "Error getting location. Please enter a latitude and longitude.";
             });
         } else {
-            document.getElementById('alertMessages').innerHTML = "Geolocation is not supported. Please enter a latitude and longitude.";
+            document.getElementById('alertMessages').innerHTML = typeof translateText === 'function' 
+                ? translateText('geolocationNotSupported') 
+                : "Geolocation is not supported. Please enter a latitude and longitude.";
         }
     } else {
         //Fetch alerts using saved location
@@ -122,7 +137,9 @@ document.addEventListener("DOMContentLoaded", () => {
             getWeatherAlerts(savedLat, savedLon);
             startPeriodicAlertCheck(savedLat, savedLon);
         } else {
-            document.getElementById('alertMessages').innerHTML = "Weather alerts are disabled. Enable alerts to receive notifications.";
+            document.getElementById('alertMessages').innerHTML = typeof translateText === 'function' 
+                ? translateText('alertsDisabled') 
+                : "Weather alerts are disabled. Enable alerts to receive notifications.";
         }
     }
 });
@@ -130,12 +147,17 @@ document.addEventListener("DOMContentLoaded", () => {
 //Testing & Debugging
 //Shows a browser notification if allowed
 function showNotification(message) {
+    // Get translated notification title
+    const notificationTitle = typeof translateText === 'function' 
+        ? translateText('weatherAlert') 
+        : "Weather Alert";
+        
     if (Notification.permission === "granted") {
-        new Notification("Weather Alert", { body: message });
+        new Notification(notificationTitle, { body: message });
     } else if (Notification.permission !== "denied") {
         Notification.requestPermission().then(permission => {
             if (permission === "granted") {
-                new Notification("Weather Alert", { body: message });
+                new Notification(notificationTitle, { body: message });
             }
         });
     }
