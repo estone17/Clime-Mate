@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clime-Mate</title>
+    <link rel="stylesheet" href="feelsLike-style.css">
+</head>
+<body>
+    <div id="weather-container">
+        <!-- Wrap the title in a button -->
+        <button id="reset-button" onclick="resetPage()">Clime-Mate</button>
+        <input type="text" id="city" placeholder="Enter city">
+        <button onclick="getWeather()">Search</button>
+        <!-- Geolocation button with ID -->
+        <button id="geo-location" onclick="getWeatherByGeolocation()">Use My Location</button>
+        <!-- Link to settings page -->
+        <button id="settings-button" onclick="window.location.href='feelsLikeSettings.html'">Settings</button>
+
+        <img id="weather-icon" alt="Weather Icon">
+
+        <div id="temp-div"></div>
+
+        <div id="weather-info"></div>
+
+        <div id="feels-like"></div> <!-- Added for "Feels Like" temperature -->
+
+        <div id="hourly-forecast"></div>
+    </div>
+    <script src="feelsLike.js"></script>
+    <script src="feelsLikeDisplay.js"></script> <!-- Added script for feelsLikeDisplay.js -->
+    <script>
+        // Add the resetPage function
+        function resetPage() {
+            document.getElementById('city').value = ''; // Clear the input field
+            document.getElementById('weather-icon').style.display = 'none'; // Hide the weather icon
+            document.getElementById('temp-div').innerHTML = ''; // Clear temperature display
+            document.getElementById('weather-info').innerHTML = ''; // Clear weather info
+            document.getElementById('feels-like').innerHTML = ''; // Clear "Feels Like" temperature
+            document.getElementById('hourly-forecast').innerHTML = ''; // Clear hourly forecast
+        }
+
+        // Ensure "Feels Like" respects the toggle setting on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const showFeelsLike = localStorage.getItem('showFeelsLike') === 'true';
+            if (!showFeelsLike) {
+                document.getElementById('feels-like').innerText = ''; // Clear if setting is off
+            }
+        });
+    </script>
+</body>
+</html>

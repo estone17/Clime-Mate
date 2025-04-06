@@ -1,0 +1,56 @@
+<!-- This is the HTML file for the settings page of the Clime-Mate extension. It allows users to toggle the display of "Feels Like" temperature. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clime-Mate Settings</title>
+    <link rel="stylesheet" href="feelsLikeSettings-style.css">
+</head>
+<body>
+    <div id="settings-container">
+        <button id="reset-button" onclick="window.location.href='feelsLike.html'">Clime-Mate</button>
+        <div class="setting-item">
+            <span>Enable "Feels Like":</span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="toggle-feels-like">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="toggle-container">
+            <label for="alertToggle">Enable Weather Alerts:</label>
+            <label class="toggle-switch">
+                <input type="checkbox" id="alert-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleFeelsLike = document.getElementById('toggle-feels-like');
+            const toggleWeatherAlerts = document.getElementById('toggle-weather-alerts');
+
+            // Initialize "Feels Like" toggle
+            const storedFeelsLike = localStorage.getItem('showFeelsLike');
+            if (storedFeelsLike === 'true') {
+                toggleFeelsLike.checked = true;
+                document.body.classList.add('show-feels-like');
+            }
+
+            toggleFeelsLike.addEventListener('change', function() {
+                if (toggleFeelsLike.checked) {
+                    localStorage.setItem('showFeelsLike', 'true');
+                    document.body.classList.add('show-feels-like');
+                } else {
+                    localStorage.setItem('showFeelsLike', 'false');
+                    document.body.classList.remove('show-feels-like');
+                }
+            });
+
+        });
+    </script>
+    <script src = "feelsLikeDisplay.js"></script>
+    <script src = "feelsLike-weatherAlerts.js"></script>
+</body>
+</html>
