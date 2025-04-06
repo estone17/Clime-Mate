@@ -69,13 +69,48 @@ function getWeatherByGeolocation() {
         alert('Geolocation is not supported by this browser.');
     }
 }
-  
+ 
+// Function to calculate the time until the next event (sunrise or sunset)
+function getTimeUntil(eventTime, currentTime) {
+    const timeDifference = eventTime - currentTime; // Time difference in milliseconds
+    const hours = Math.floor(timeDifference / (1000 * 60 * 60)); // Convert to hours
+    const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60)); // Convert to minutes
+    return `${hours}h ${minutes}m`; // Return formatted time
+}
+
+// Function to determine the upcoming event (sunrise or sunset)
+function getUpcomingEvent(sunriseTime, sunsetTime, currentTime) {
+    // Check if the current time is before the next sunrise or sunset
+    if (currentTime < sunriseTime) {
+        // If current time is before sunrise, show sunrise
+        return {
+            name: 'Sunrise',
+            timeUntil: getTimeUntil(sunriseTime, currentTime)
+        };
+    } else if (currentTime < sunsetTime) {
+        // If current time is after sunrise but before sunset, show sunset
+        return {
+            name: 'Sunset',
+            timeUntil: getTimeUntil(sunsetTime, currentTime)
+        };
+    } else {
+        // If both sunrise and sunset have passed today, show next day's sunrise
+        const nextDaySunrise = new Date(sunriseTime);
+        nextDaySunrise.setDate(nextDaySunrise.getDate() + 1);
+        return {
+            name: 'Sunrise (next day)',
+            timeUntil: getTimeUntil(nextDaySunrise, currentTime)
+        };
+    }
+}
+
 // Function to display weather information
 function displayWeather(data) {
     const tempDivInfo = document.getElementById('temp-div');
     const weatherInfoDiv = document.getElementById('weather-info');
     const weatherIcon = document.getElementById('weather-icon');
     const hourlyForecastDiv = document.getElementById('hourly-forecast');
+    const detailsContent = document.getElementById('details-content');
 
     // Clear previous content
     weatherInfoDiv.innerHTML = '';
@@ -90,6 +125,19 @@ function displayWeather(data) {
         const description = data.weather[0].description;
         const iconCode = data.weather[0].icon;
         const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@4x.png`;
+
+        // Convert sunrise and sunset
+        const sunriseTime = new Date(data.sys.sunrise * 1000);
+        const sunsetTime = new Date(data.sys.sunset * 1000);
+
+        const sunrise = sunriseTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const sunset = sunsetTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+         // Calculate time until sunrise and sunset
+         const currentTime = new Date();
+         const timeUntilSunrise = getTimeUntil(sunriseTime, currentTime);
+         const timeUntilSunset = getTimeUntil(sunsetTime, currentTime);
+ 
 
         const temperatureHTML = `
             <p>${temperature}°F</p>
@@ -110,6 +158,25 @@ function displayWeather(data) {
         // Make the weather icon visible after data is loaded
         weatherIcon.style.display = 'block';
 
+        const sunriseHTML = `<p>🌞 Sunrise: ${sunrise}</p>`;
+        const sunsetHTML = `<p>🌙 Sunset: ${sunset}</p>`;
+
+        const upcomingEvent = getUpcomingEvent(sunriseTime, sunsetTime, currentTime);
+        detailsContent.innerHTML = `
+            ${sunriseHTML}
+            ${sunsetHTML}
+            <p>Upcoming: ${upcomingEvent.name}</p>
+            <p>Time until next event: ${upcomingEvent.timeUntil}</p>
+        `;
+
+        // Make the "More Details" button visible only after loading weather
+        const detailsButton = document.getElementById('toggle-details-btn');
+        detailsButton.style.display = 'inline-block';
+
+        // Also hide the details section again, just in case it's still showing from last time
+        document.getElementById('details-content').style.display = 'none';
+        detailsButton.textContent = 'More Details';
+
         showImage();
     }
 }
@@ -122,14 +189,14 @@ function displayHourlyForecast(hourlyData) {
   
     next24Hours.forEach(item => {
         const dateTime = new Date(item.dt * 1000); // Convert timestamp to milliseconds
-        const hour = dateTime.getHours();
+        const hourFormatted = dateTime.toLocaleTimeString([], { hour: '2-digit', hour12: true });
         const temperature = Math.round(item.main.temp);
         const iconCode = item.weather[0].icon;
         const iconUrl = `https://openweathermap.org/img/wn/${iconCode}.png`;
   
         const hourlyItemHtml = `
             <div class="hourly-item">
-                <span>${hour}:00</span>
+                <span>${hourFormatted}</span>
                 <img src="${iconUrl}" alt="Hourly Weather Icon">
                 <span>${temperature}°F</span>
             </div>
@@ -162,4 +229,17 @@ function convertFahrenheitToCelsius(fahrenheit) {
 function showImage() {
     const weatherIcon = document.getElementById('weather-icon');
     weatherIcon.style.display = 'block'; // Make the image visible once it's loaded
+}
+
+function toggleDetails() {
+    const details = document.getElementById('details-content');
+    const button = document.getElementById('toggle-details-btn');
+    
+    if (details.style.display === 'none') {
+        details.style.display = 'block';
+        button.textContent = 'Hide Details';
+    } else {
+        details.style.display = 'none';
+        button.textContent = 'More Details';
+    }
 }
