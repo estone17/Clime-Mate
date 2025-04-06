@@ -40,6 +40,7 @@ describe('createWeatherCard', () => {
 });
 
 
+//today card test
 describe('createTodayWeatherCard', () => {
     const date = '2025-03-01';
     const iconSrc = 'images/icons/cloudy-day.png';
@@ -75,4 +76,71 @@ describe('createTodayWeatherCard', () => {
     });
 });
 
+
+
+//weather api test
+// Mock the global fetch function
+global.fetch = jest.fn();
+
+describe('fetchWeatherData', () => {
+    const lat = 35.2271; // Example latitude (Charlotte, NC)
+    const lon = -80.8431; // Example longitude (Charlotte, NC)
+
+    beforeEach(() => {
+        jest.clearAllMocks(); // Clear any previous mocks to ensure no leakage between tests
+    });
+
+    test('should return data when the API call is successful', async () => {
+        // Mocking a successful response from the API
+        const mockResponse = {
+            daily: {
+                temperature_2m_max: [75, 78, 80],
+                temperature_2m_min: [50, 52, 55],
+                rain_sum: [0.2, 0.0, 0.1],
+                snowfall_sum: [0, 0, 0],
+                sunrise: ['06:30 AM', '06:35 AM', '06:40 AM'],
+                sunset: ['07:30 PM', '07:35 PM', '07:40 PM']
+            }
+        };
+
+        fetch.mockResolvedValueOnce({
+            ok: true,
+            json: jest.fn().mockResolvedValueOnce(mockResponse)
+        });
+
+        const data = await fetchWeatherData(lat, lon);
+
+        expect(fetch).toHaveBeenCalledWith(
+            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,rain_sum,snowfall_sum,sunrise,sunset&timezone=auto&forecast_days=7`
+        );
+        expect(data).toEqual(mockResponse); // Check if the data is returned correctly
+    });
+
+    test('should return null when the API call fails', async () => {
+        // Mocking a failed response (e.g., API error or network failure)
+        fetch.mockResolvedValueOnce({
+            ok: false,
+            status: 500
+        });
+
+        const data = await fetchWeatherData(lat, lon);
+
+        expect(fetch).toHaveBeenCalledWith(
+            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,rain_sum,snowfall_sum,sunrise,sunset&timezone=auto&forecast_days=7`
+        );
+        expect(data).toBeNull(); // Ensure null is returned on failure
+    });
+
+    test('should return null when there is an error in the fetch call', async () => {
+        // Mocking a network error (e.g., fetch fails)
+        fetch.mockRejectedValueOnce(new Error('Network error'));
+
+        const data = await fetchWeatherData(lat, lon);
+
+        expect(fetch).toHaveBeenCalledWith(
+            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,rain_sum,snowfall_sum,sunrise,sunset&timezone=auto&forecast_days=7`
+        );
+        expect(data).toBeNull(); // Ensure null is returned on error
+    });
+});
 
