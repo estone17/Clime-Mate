@@ -1,3 +1,4 @@
+/* Global Body Styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -6,6 +7,7 @@ body {
     color: var(--text-color);
 }
 
+/* Header */
 header {
     background-color: #333;
     color: #fff;
@@ -27,6 +29,7 @@ header h1 {
     margin: 0;
 }
 
+/* Navigation Links */
 nav ul {
     list-style-type: none;
     margin: 0;
@@ -48,19 +51,39 @@ nav ul li a:hover {
     text-decoration: underline;
 }
 
-/* Main Content */
+/* Main Content Container */
 .container {
     margin-top: 70px;
     padding: 20px;
     text-align: center;
 }
 
+/* Settings Container */
 .settings-container {
-    margin-top: 100px;
-    text-align: center;
+    /* Center the settings box and give it a clean background */
+    margin: 100px auto 0 auto; /* 100px top margin, auto left/right, 0 bottom */
     padding: 20px;
+    text-align: center;
+    max-width: 600px;          /* Limit width for better readability */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    background-color: #fff;    /* Default background for light theme */
+    color: #333;               /* Default text color for light theme */
 }
 
+/* Dark Theme Override for Settings Container */
+[data-theme='dark'] .settings-container {
+    background-color: #333;    /* Dark grey container background for dark theme (matches header) */
+    color: #f0f0f0;            /* Lighter text color for dark theme */
+}
+
+/* Dark Theme Override for Container */
+[data-theme='dark'] .container {
+    background-color: #333;    /* Dark grey container background for dark theme (matches header) */
+    color: #f0f0f0;            /* Lighter text color for dark theme */
+}
+
+/* Footer */
 footer {
     background-color: #333;
     color: #fff;
@@ -69,12 +92,19 @@ footer {
     position: fixed;
     width: 100%;
     bottom: 0;
+    margin-top: 20px;
 }
 
 footer p {
     margin: 0;
 }
 
+/* Hide Footer Option */
+.footer-hidden {
+    display: none;
+}
+
+/* Settings Icon */
 .settings-icon {
     position: fixed;
     top: 10px;
@@ -93,6 +123,7 @@ footer p {
     transform: scale(1.1);
 }
 
+/* Custom Theme Settings */
 .custom-theme-settings {
     margin-top: 20px;
 }
@@ -102,12 +133,127 @@ select, button, input[type="color"] {
     padding: 10px;
     font-size: 16px;
     margin: 10px;
+    background-color: var(--primary-color);
 }
 
 /* Layout adjustments for compact and detailed views */
+[data-view='compact'] {
+    font-size: 14px;
+}
+
+[data-view='compact'] .container,
+[data-view='compact'] .settings-container {
+    padding: 10px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+[data-view='compact'] .card {
+    width: 8rem !important;
+    min-height: 16rem !important;
+    font-size: 11px;
+}
+
+[data-view='compact'] .card-body {
+    padding: 8px;
+}
+
+[data-view='compact'] .card-margin {
+    margin-bottom: 3px;
+}
+
+[data-view='compact'] h1, 
+[data-view='compact'] h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+[data-view='compact'] h3 {
+    font-size: 1.2rem;
+}
+
+[data-view='compact'] .form-label {
+    margin-bottom: 5px;
+}
+
+[data-view='compact'] .mb-3 {
+    margin-bottom: 10px !important;
+}
+
+[data-view='compact'] .mb-4 {
+    margin-bottom: 15px !important;
+}
+
+[data-view='compact'] select, 
+[data-view='compact'] button, 
+[data-view='compact'] input[type="color"] {
+    padding: 5px;
+    font-size: 14px;
+    margin: 5px;
+}
+
+[data-view='compact'] .container-map {
+    gap: 5px;
+    padding: 0.3rem;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    flex-wrap: wrap;
+}
+
 [data-view='compact'] .weather-info {
     font-size: 14px;
     padding: 10px;
+}
+
+[data-view='detailed'] {
+    font-size: 18px;
+}
+
+[data-view='detailed'] .container,
+[data-view='detailed'] .settings-container {
+    padding: 25px;
+}
+
+[data-view='detailed'] .card {
+    width: 14rem !important;
+    min-height: 22rem !important;
+}
+
+[data-view='detailed'] h1, 
+[data-view='detailed'] h2 {
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+}
+
+[data-view='detailed'] h3 {
+    font-size: 1.8rem;
+}
+
+[data-view='detailed'] .form-label {
+    margin-bottom: 10px;
+}
+
+[data-view='detailed'] .mb-3 {
+    margin-bottom: 20px !important;
+}
+
+[data-view='detailed'] .mb-4 {
+    margin-bottom: 25px !important;
+}
+
+[data-view='detailed'] select, 
+[data-view='detailed'] button, 
+[data-view='detailed'] input[type="color"] {
+    padding: 12px;
+    font-size: 18px;
+    margin: 12px;
+}
+
+[data-view='detailed'] .container-map {
+    gap: 15px;
+    padding: 0.8rem;
 }
 
 [data-view='detailed'] .weather-info {
@@ -115,18 +261,18 @@ select, button, input[type="color"] {
     padding: 20px;
 }
 
-/* Light Theme */
+/* Light Theme (Default) */
 :root {
     --background-color: #f0f0f0; /* Default light background */
-    --text-color: #333;           /* Default dark text */
-    --primary-color: #b7bac1;     /* Default button color */
+    --text-color: #333;          /* Default dark text */
+    --primary-color: #b7bac1;    /* Default button color */
 }
 
 /* Dark Theme */
 [data-theme='dark'] {
-    --background-color: #333;  /* Dark background */
-    --text-color: #f0f0f0;     /* Light text */
-    --primary-color: #ffffff;  /* White button */
+    --background-color: #333;    /* Dark background */
+    --text-color: #f0f0f0;       /* Light text for dark theme */
+    --primary-color: #ffffff;    /* White button */
 }
 
 /* Custom Theme */
@@ -136,39 +282,22 @@ select, button, input[type="color"] {
     --primary-color: #b7bac1;    /* Custom button color */
 }
 
-button, select, input[type="color"] {
-    padding: 10px;
-    font-size: 16px;
-    margin: 10px;
-    background-color: var(--primary-color); /* Apply primary color to buttons */
-}
-
-/* Layout for compact and detailed views */
-[data-view='compact'] .weather-info {
-    font-size: 14px;
-    padding: 10px;
-}
-
-[data-view='detailed'] .weather-info {
-    font-size: 18px;
-    padding: 20px;
-}
-
-
-.hidden{
+/* Hidden and Margin Utility Classes */
+.hidden {
     display: none;
     visibility: hidden;
 }
 
-.marginblock{
+.marginblock {
     margin: 10px 10px 10px 10px;
 }
 
+/* Weather Container Styles */
 .container-map {
     display: flex;
     justify-content: space-between;
-    gap: 10px; 
-    padding: .5rem;
+    gap: 10px;
+    padding: 0.5rem;
     border-radius: 10px;
     box-shadow: 0px 5px 10px 0px rgba(17, 12, 46, 0.8);
     flex-basis: 275px;
@@ -181,33 +310,68 @@ button, select, input[type="color"] {
     align-items: center;
 }
 
+/* Dark Theme Override for Weather Container */
+[data-theme='dark'] .container-map {
+    background-color: #333;    /* Dark grey container background for dark theme (matches header) */
+    color: #f0f0f0;            /* Lighter text color for dark theme */
+}
 
+/* Today's Weather Container Specific Styles */
+#today-container {
+    border: 2px solid var(--primary-color);
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
 
+/* Dark Theme Override for Today's Weather Container */
+[data-theme='dark'] #today-container {
+    background-color: #333;
+    color: #f0f0f0;
+    border-color: #555;
+}
 
-.map-disabled{
+/* Light Theme Override for Today's Weather Container */
+[data-theme='light'] #today-container, 
+:root #today-container {
+    background-color: #f0f0f0;
+    color: #333;
+    border-color: #007bff;
+}
+
+/* Custom Theme Override for Today's Weather Container */
+[data-theme='custom'] #today-container {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border-color: var(--primary-color);
+}
+
+/* Dark Theme Override for Cards */
+[data-theme='dark'] .card {
+    background-color: #333;    /* Dark grey card background for dark theme (matches header) */
+    color: #f0f0f0;            /* Lighter text color for dark theme */
+    border-color: #555;        /* Darker border color for dark theme */
+}
+
+.map-disabled {
     color: grey;
     background-color: grey;
 }
 
-.center{
+.center {
     align-items: center;
 }
 
 .card-body img {
     width: 50%;
-    height: 35%
+    height: 35%;
 }
 
-.card-margin{
+.card-margin {
     margin-bottom: 5px;
 }
 
-nav{
+nav {
     margin-bottom: 20px;
-}
-
-footer{
-    margin-top: 20px;
 }
 
 .flex-container {
@@ -216,10 +380,11 @@ footer{
     align-items: center;
     width: 100vw;
     height: 100vh;
+    background-color: var(--background-color);
+    color: var(--text-color);
 }
 
 iframe {
-
     width: 98%;
     height: 80%;
     border: none;

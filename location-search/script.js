@@ -138,6 +138,26 @@ function displayHourlyForecast(hourlyData) {
         hourlyForecastDiv.innerHTML += hourlyItemHtml;
     });
 }
+
+// Converts Fahrenheit to Celsius
+function convertFahrenheitToCelsius(fahrenheit) {
+    return (fahrenheit - 32) * 5 / 9;
+  }
+  
+  // Converts Celsius to Fahrenheit
+  function convertCelsiusToFahrenheit(celsius) {
+    return (celsius * 9 / 5) + 32;
+  }
+  
+  // Example conversion for wind speed (km/h <-> mph)
+  function convertMphToKmh(mph) {
+    return mph / 0.621371;
+  }
+  
+  function convertKmhToMph(kmh) {
+    return kmh * 0.621371;
+  }
+  
   
 function showImage() {
     const weatherIcon = document.getElementById('weather-icon');
