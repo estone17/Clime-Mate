@@ -80,29 +80,27 @@ function getTimeUntil(eventTime, currentTime) {
 
 // Function to determine the upcoming event (sunrise or sunset)
 function getUpcomingEvent(sunriseTime, sunsetTime, currentTime) {
-    // Check if the current time is before the next sunrise or sunset
     if (currentTime < sunriseTime) {
-        // If current time is before sunrise, show sunrise
         return {
-            name: 'Sunrise',
+            name: "Sunrise",
             timeUntil: getTimeUntil(sunriseTime, currentTime)
         };
     } else if (currentTime < sunsetTime) {
-        // If current time is after sunrise but before sunset, show sunset
         return {
-            name: 'Sunset',
+            name: "Sunset",
             timeUntil: getTimeUntil(sunsetTime, currentTime)
         };
     } else {
-        // If both sunrise and sunset have passed today, show next day's sunrise
+        // Ensure next day's sunrise is used (add 24 hours in ms)
         const nextDaySunrise = new Date(sunriseTime);
         nextDaySunrise.setDate(nextDaySunrise.getDate() + 1);
         return {
-            name: 'Sunrise (next day)',
-            timeUntil: getTimeUntil(nextDaySunrise, currentTime)
+            name: "Sunrise (next day)",
+            timeUntil: getTimeUntil(nextDaySunrise.getTime(), currentTime)
         };
     }
 }
+
 
 // Function to display weather information
 function displayWeather(data) {
@@ -110,6 +108,7 @@ function displayWeather(data) {
     const weatherInfoDiv = document.getElementById('weather-info');
     const weatherIcon = document.getElementById('weather-icon');
     const hourlyForecastDiv = document.getElementById('hourly-forecast');
+    const detailsContent = document.getElementById('details-content');
 
     // Clear previous content
     weatherInfoDiv.innerHTML = '';
@@ -242,3 +241,9 @@ function toggleDetails() {
         button.textContent = 'More Details';
     }
 }
+
+// Export the functions
+module.exports = {
+    getTimeUntil,
+    getUpcomingEvent
+};
