@@ -353,15 +353,14 @@ describe('Settings Management Functions', () => {
 global.fetch = jest.fn();
 
 describe('fetchWeatherData', () => {
-    const lat = 35.2271; // Example latitude (Charlotte, NC)
-    const lon = -80.8431; // Example longitude (Charlotte, NC)
+    const lat = 35.2271; 
+    const lon = -80.8431; 
 
     beforeEach(() => {
-        jest.clearAllMocks(); // Clear any previous mocks to ensure no leakage between tests
+        jest.clearAllMocks(); 
     });
 
     test('should return data when the API call is successful', async () => {
-        // Mocking a successful response from the API
         const mockResponse = {
             daily: {
                 temperature_2m_max: [75, 78, 80],
@@ -383,11 +382,10 @@ describe('fetchWeatherData', () => {
         expect(fetch).toHaveBeenCalledWith(
             `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,rain_sum,snowfall_sum,sunrise,sunset&timezone=auto&forecast_days=7`
         );
-        expect(data).toEqual(mockResponse); // Check if the data is returned correctly
+        expect(data).toEqual(mockResponse); 
     });
 
     test('should return null when the API call fails', async () => {
-        // Mocking a failed response (e.g., API error or network failure)
         fetch.mockResolvedValueOnce({
             ok: false,
             status: 500
@@ -402,7 +400,6 @@ describe('fetchWeatherData', () => {
     });
 
     test('should return null when there is an error in the fetch call', async () => {
-        // Mocking a network error (e.g., fetch fails)
         fetch.mockRejectedValueOnce(new Error('Network error'));
 
         const data = await fetchWeatherData(lat, lon);
