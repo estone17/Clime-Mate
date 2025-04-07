@@ -110,6 +110,7 @@ function displayWeather(data) {
     const weatherInfoDiv = document.getElementById('weather-info');
     const weatherIcon = document.getElementById('weather-icon');
     const hourlyForecastDiv = document.getElementById('hourly-forecast');
+    const detailsContent = document.getElementById('details-content');
 
     // Clear previous content
     weatherInfoDiv.innerHTML = '';
