@@ -243,3 +243,9 @@ function toggleDetails() {
         button.textContent = 'More Details';
     }
 }
+
+// Export the functions
+module.exports = {
+    getTimeUntil,
+    getUpcomingEvent
+};
