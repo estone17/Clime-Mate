@@ -74,3 +74,7 @@ function updateFeelsLikeByGeolocation() {
         console.error('Geolocation is not supported by this browser.');
     }
 }
+
+
+//function exports
+module.exports = {getFeelsLikeTemperature, updateFeelsLikeByGeolocation, updateFeelsLike}
