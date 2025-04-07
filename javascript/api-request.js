@@ -1,17 +1,8 @@
-//event listener for the anchor
-/*anch.addEventListener('click', function(event) {
-    event.preventDefault();
-    const parkData = {
-      title: title,
-      address: address,
-      description: description,
-      imgSrc: imgSrc,
-      imgAlt: imgAlt
-  };
-  localStorage.setItem('selectedPark', JSON.stringify(parkData));
-  window.location.href = anch.href;
-  });
-  */
+
+
+/*Un comment this to get test cases to work */
+//const {translateText, formatTemperature, convertTemperature, applyTranslations, saveSettings, initSettings} = require('../javascript/settings.js');
+
 
 const weatherAlert = document.getElementById('weather-alert');
 //const searchBar = document.getElementById('searchbar');
@@ -26,96 +17,100 @@ const todayContainer = document.getElementById('today-container');
 
 
 
-searchBtn.addEventListener('click', async function(event){
+if (searchBtn){
+    searchBtn.addEventListener('click', async function(event){
 
-    if(latitude.value.length === 0 || longitude.value.length === 0){
-        weatherAlert.classList.remove('hidden');
-        return;
-    }
+        if(latitude.value.length === 0 || longitude.value.length === 0){
+            weatherAlert.classList.remove('hidden');
+            return;
+        }
+        
+        
+    
+       const weatherData = await fetchWeatherData(latitude.value, longitude.value);
+       
+       if(weatherData === null){
+            weatherAlert.classList.remove('hidden');
+            todayContainer.classList.add('hidden');
+            return;
+       }
+    
+       weatherAlert.classList.add('hidden');
+       todayContainer.classList.remove('hidden');
+    
+       weatherContainer.innerHTML = '';
+    
+       for(i = 0; i <7; i++){
+        newHigh = convertTemperature(parseInt(weatherData.daily.temperature_2m_max[i]));
+        newLow = convertTemperature(parseInt(weatherData.daily.temperature_2m_min[i]));
     
     
-
-   const weatherData = await fetchWeatherData(latitude.value, longitude.value);
-   
-   if(weatherData === null){
-        weatherAlert.classList.remove('hidden');
-        todayContainer.classList.add('hidden');
-        return;
-   }
-
-   weatherAlert.classList.add('hidden');
-   todayContainer.classList.remove('hidden');
-
-   weatherContainer.innerHTML = '';
-
-   for(i = 0; i <7; i++){
-    newHigh = convertTemperature(parseInt(weatherData.daily.temperature_2m_max[i]));
-    newLow = convertTemperature(parseInt(weatherData.daily.temperature_2m_min[i]));
-
-
-    // Get the original temperature in Celsius for weather icon determination
-    const originalHighTemp = parseInt(weatherData.daily.temperature_2m_max[i]);
+        // Get the original temperature in Celsius for weather icon determination
+        const originalHighTemp = parseInt(weatherData.daily.temperature_2m_max[i]);
+        
+        if(weatherData.daily.snowfall_sum[i] > 10){
+            if(i == 0){
+                const todayCard = createTodayWeatherCard(weatherData.daily.time[0],"images/icons/snowflake.png",newHigh,newLow,weatherData.daily.rain_sum[0],weatherData.daily.snowfall_sum[0],weatherData.daily.sunrise[0].split("T")[1],weatherData.daily.sunset[0].split("T")[1]);
+                todayContainer.innerHTML = ''; // Clear previous content
+                todayContainer.appendChild(todayCard);
+            }
     
-    if(weatherData.daily.snowfall_sum[i] > 10){
-        if(i == 0){
-            const todayCard = createTodayWeatherCard(weatherData.daily.time[0],"images/icons/snowflake.png",newHigh,newLow,weatherData.daily.rain_sum[0],weatherData.daily.snowfall_sum[0],weatherData.daily.sunrise[0].split("T")[1],weatherData.daily.sunset[0].split("T")[1]);
-            todayContainer.innerHTML = ''; // Clear previous content
-            todayContainer.appendChild(todayCard);
+            weatherContainer.appendChild(createWeatherCard(weatherData.daily.time[i], "images/icons/snowflake.png", newHigh, newLow, weatherData.daily.rain_sum[i] , weatherData.daily.snowfall_sum[i], weatherData.daily.sunrise[i].split('T')[1], weatherData.daily.sunset[i].split('T')[1]));
+            console.log("test 1");
+    
         }
-
-        weatherContainer.appendChild(createWeatherCard(weatherData.daily.time[i], "images/icons/snowflake.png", newHigh, newLow, weatherData.daily.rain_sum[i] , weatherData.daily.snowfall_sum[i], weatherData.daily.sunrise[i].split('T')[1], weatherData.daily.sunset[i].split('T')[1]));
-        console.log("test 1");
-
-    }
-    else if(weatherData.daily.rain_sum[i] > 40){
-        if(i == 0){
-            const todayCard = createTodayWeatherCard(weatherData.daily.time[0],"images/icons/rainy.png",newHigh,newLow,weatherData.daily.rain_sum[0],weatherData.daily.snowfall_sum[0],weatherData.daily.sunrise[0].split("T")[1],weatherData.daily.sunset[0].split("T")[1]);
-            todayContainer.innerHTML = ''; // Clear previous content
-            todayContainer.appendChild(todayCard);
+        else if(weatherData.daily.rain_sum[i] > 40){
+            if(i == 0){
+                const todayCard = createTodayWeatherCard(weatherData.daily.time[0],"images/icons/rainy.png",newHigh,newLow,weatherData.daily.rain_sum[0],weatherData.daily.snowfall_sum[0],weatherData.daily.sunrise[0].split("T")[1],weatherData.daily.sunset[0].split("T")[1]);
+                todayContainer.innerHTML = ''; // Clear previous content
+                todayContainer.appendChild(todayCard);
+            }
+    
+            weatherContainer.appendChild(createWeatherCard(weatherData.daily.time[i], "images/icons/rainy.png", newHigh, newLow, weatherData.daily.rain_sum[i] , weatherData.daily.snowfall_sum[i], weatherData.daily.sunrise[i].split('T')[1], weatherData.daily.sunset[i].split('T')[1]));
+            console.log("test 2");
         }
-
-        weatherContainer.appendChild(createWeatherCard(weatherData.daily.time[i], "images/icons/rainy.png", newHigh, newLow, weatherData.daily.rain_sum[i] , weatherData.daily.snowfall_sum[i], weatherData.daily.sunrise[i].split('T')[1], weatherData.daily.sunset[i].split('T')[1]));
-        console.log("test 2");
-    }
-    // Use the original Celsius temperature for icon determination
-    else if (originalHighTemp >= 21){ // 21°C ≈ 70°F
-        if(i == 0){
-            const todayCard = createTodayWeatherCard(weatherData.daily.time[0],"images/icons/sun.png",newHigh,newLow,weatherData.daily.rain_sum[0],weatherData.daily.snowfall_sum[0],weatherData.daily.sunrise[0].split("T")[1],weatherData.daily.sunset[0].split("T")[1]);
-            todayContainer.innerHTML = ''; // Clear previous content
-            todayContainer.appendChild(todayCard);
+        // Use the original Celsius temperature for icon determination
+        else if (originalHighTemp >= 21){ // 21°C ≈ 70°F
+            if(i == 0){
+                const todayCard = createTodayWeatherCard(weatherData.daily.time[0],"images/icons/sun.png",newHigh,newLow,weatherData.daily.rain_sum[0],weatherData.daily.snowfall_sum[0],weatherData.daily.sunrise[0].split("T")[1],weatherData.daily.sunset[0].split("T")[1]);
+                todayContainer.innerHTML = ''; // Clear previous content
+                todayContainer.appendChild(todayCard);
+            }
+    
+            weatherContainer.appendChild(createWeatherCard(weatherData.daily.time[i], "images/icons/sun.png", newHigh, newLow, weatherData.daily.rain_sum[i] , weatherData.daily.snowfall_sum[i], weatherData.daily.sunrise[i].split('T')[1], weatherData.daily.sunset[i].split('T')[1]));
+            console.log("test 3");
         }
-
-        weatherContainer.appendChild(createWeatherCard(weatherData.daily.time[i], "images/icons/sun.png", newHigh, newLow, weatherData.daily.rain_sum[i] , weatherData.daily.snowfall_sum[i], weatherData.daily.sunrise[i].split('T')[1], weatherData.daily.sunset[i].split('T')[1]));
-        console.log("test 3");
-    }
-    else if(originalHighTemp < 21 && originalHighTemp > 4){ // 4°C ≈ 40°F, 21°C ≈ 70°F
-        if(i == 0){
-            const todayCard = createTodayWeatherCard(weatherData.daily.time[0],"images/icons/semi-cloudy-day.png",newHigh,newLow,weatherData.daily.rain_sum[0],weatherData.daily.snowfall_sum[0],weatherData.daily.sunrise[0].split("T")[1],weatherData.daily.sunset[0].split("T")[1]);
-            todayContainer.innerHTML = ''; // Clear previous content
-            todayContainer.appendChild(todayCard);
+        else if(originalHighTemp < 21 && originalHighTemp > 4){ // 4°C ≈ 40°F, 21°C ≈ 70°F
+            if(i == 0){
+                const todayCard = createTodayWeatherCard(weatherData.daily.time[0],"images/icons/semi-cloudy-day.png",newHigh,newLow,weatherData.daily.rain_sum[0],weatherData.daily.snowfall_sum[0],weatherData.daily.sunrise[0].split("T")[1],weatherData.daily.sunset[0].split("T")[1]);
+                todayContainer.innerHTML = ''; // Clear previous content
+                todayContainer.appendChild(todayCard);
+            }
+    
+            weatherContainer.appendChild(createWeatherCard(weatherData.daily.time[i], "images/icons/semi-cloudy-day.png", newHigh, newLow, weatherData.daily.rain_sum[i] , weatherData.daily.snowfall_sum[i], weatherData.daily.sunrise[i].split('T')[1], weatherData.daily.sunset[i].split('T')[1]));
+            console.log("test 4");
         }
-
-        weatherContainer.appendChild(createWeatherCard(weatherData.daily.time[i], "images/icons/semi-cloudy-day.png", newHigh, newLow, weatherData.daily.rain_sum[i] , weatherData.daily.snowfall_sum[i], weatherData.daily.sunrise[i].split('T')[1], weatherData.daily.sunset[i].split('T')[1]));
-        console.log("test 4");
-    }
-    else{
-        if(i == 0){
-            const todayCard = createTodayWeatherCard(weatherData.daily.time[0],"images/icons/cloudy-day.png",newHigh,newLow,weatherData.daily.rain_sum[0],weatherData.daily.snowfall_sum[0],weatherData.daily.sunrise[0].split("T")[1],weatherData.daily.sunset[0].split("T")[1]);
-            todayContainer.innerHTML = ''; // Clear previous content
-            todayContainer.appendChild(todayCard);
+        else{
+            if(i == 0){
+                const todayCard = createTodayWeatherCard(weatherData.daily.time[0],"images/icons/cloudy-day.png",newHigh,newLow,weatherData.daily.rain_sum[0],weatherData.daily.snowfall_sum[0],weatherData.daily.sunrise[0].split("T")[1],weatherData.daily.sunset[0].split("T")[1]);
+                todayContainer.innerHTML = ''; // Clear previous content
+                todayContainer.appendChild(todayCard);
+            }
+    
+            weatherContainer.appendChild(createWeatherCard(weatherData.daily.time[i], "images/icons/cloudy-day.png", newHigh, newLow, weatherData.daily.rain_sum[i] , weatherData.daily.snowfall_sum[i], weatherData.daily.sunrise[i].split('T')[1], weatherData.daily.sunset[i].split('T')[1]));
+            console.log("test 5");
         }
-
-        weatherContainer.appendChild(createWeatherCard(weatherData.daily.time[i], "images/icons/cloudy-day.png", newHigh, newLow, weatherData.daily.rain_sum[i] , weatherData.daily.snowfall_sum[i], weatherData.daily.sunrise[i].split('T')[1], weatherData.daily.sunset[i].split('T')[1]));
-        console.log("test 5");
-    }
-
-   }
-
-
+    
+       }
     
     
+        
+        
+    
+    });
+}
 
-});
+
 
 
 async function fetchWeatherData(lat, lon){
@@ -211,7 +206,7 @@ function createWeatherCard(date, iconSrc, highTemp, lowTemp, rainSum, snowSum, s
 
 function createTodayWeatherCard(date, iconSrc, highTemp, lowTemp, rainSum, snowSum, sunrise, sunset) {
     const card = document.createElement("div");
-    card.className = "card text-center mb-3";
+    card.className = "today-card text-center mb-3";
     card.style.width = "100%";
     // Remove hardcoded styling to respect theme
     card.style.padding = "1rem";
@@ -269,61 +264,5 @@ function createTodayWeatherCard(date, iconSrc, highTemp, lowTemp, rainSum, snowS
 
 
 
-// searchBar.addEventListener('input',function(event){
-//     if(searchBar.value.length === 0){
-        
-//     }
-//     else{
-//         const data = fetchCityData(searchBar.value);
-//         dropdown.textContent = data[0];
-//         console.log(data[0])
-//     }
-// });
-
-
-
-
-/*async function fetchCityData(cityName) {
-    const overpassUrl = "https://overpass-api.de/api/interpreter";
-    const query = `
-        [out:json];
-        area["ISO3166-1"="US"]->.searchArea;
-        node["place"="city"]["name"~"${cityName}", i](area.searchArea);
-        out body;
-    `;
-
-    try {
-        // Make a POST request to the Overpass API
-        const response = await fetch(overpassUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: `data=${encodeURIComponent(query)}`,
-        });
-
-        const data = await response.json();
-
-        if (data.elements.length === 0) {
-            console.log("No cities found.");
-            return [];
-        }
-
-        // Extract city information
-        const cities = data.elements.map(city => ({
-            name: city.tags.name,
-            state: city.tags["is_in:state"] || "Unknown",
-            lat: city.lat,
-            lon: city.lon
-        }));
-
-        console.log(cities); // Logs city details
-        return cities;
-    } catch (error) {
-        console.error("Error fetching city data:", error);
-        return [];
-    }
-}
-
-// Example usage (replace "Charlotte" with any user input)
-fetchCityData("Charlotte");*/
+//function exports
+module.exports = {createTodayWeatherCard, createWeatherCard, fetchWeatherData}

@@ -396,3 +396,8 @@ function translateText(key) {
     // Fallback to English if translation not found
     return translations.en[key] || key;
 }
+
+
+
+//exports
+module.exports = {translateText, formatTemperature, convertTemperature, applyTranslations, saveSettings, initSettings};

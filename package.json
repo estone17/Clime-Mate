@@ -2,5 +2,16 @@
   "dependencies": {
     "express": "^4.21.2",
     "mysql": "^2.18.1"
-  }
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
+  },
+  "type": "module",
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+  "testEnvironment": "jest-environment-jsdom"
+}
 }
