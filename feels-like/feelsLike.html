@@ -27,8 +27,9 @@
 
         <div id="hourly-forecast"></div>
     </div>
+    <!-- Load scripts in the correct order -->
     <script src="feelsLike.js"></script>
-    <script src="feelsLikeDisplay.js"></script> <!-- Added script for feelsLikeDisplay.js -->
+    <script src="feelsLikeDisplay.js"></script>
     <script>
         // Add the resetPage function
         function resetPage() {
@@ -42,11 +43,96 @@
 
         // Ensure "Feels Like" respects the toggle setting on page load
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize temperature unit and language settings
+            const tempUnit = localStorage.getItem('clime-mate-temp-unit') || 'fahrenheit';
+            const language = localStorage.getItem('clime-mate-language') || 'en';
+            
+            console.log('Initialized with temperature unit:', tempUnit, 'and language:', language);
+            
+            // Check "Feels Like" toggle setting
             const showFeelsLike = localStorage.getItem('showFeelsLike') === 'true';
             if (!showFeelsLike) {
                 document.getElementById('feels-like').innerText = ''; // Clear if setting is off
             }
+            
+            // Translate UI elements based on language preference
+            translateUIElements();
+            
+            // Listen for settings updates from the settings page
+            window.addEventListener('message', function(event) {
+                if (event.data && event.data.type === 'settings-updated') {
+                    console.log('Settings updated, refreshing UI');
+                    
+                    // Refresh the UI with new settings
+                    translateUIElements();
+                    
+                    // Update "Feels Like" display based on toggle setting
+                    const showFeelsLike = localStorage.getItem('showFeelsLike') === 'true';
+                    if (!showFeelsLike) {
+                        document.getElementById('feels-like').innerText = '';
+                    } else {
+                        // If we have weather data, update the "Feels Like" display
+                        const city = document.getElementById('city').value.trim();
+                        if (city) {
+                            updateFeelsLike();
+                        }
+                    }
+                    
+                    // If we have weather data displayed, refresh it with the new temperature unit
+                    if (document.getElementById('temp-div').innerHTML !== '') {
+                        const city = document.getElementById('city').value.trim();
+                        if (city) {
+                            getWeather();
+                        } else {
+                            // Try geolocation if no city is entered
+                            getWeatherByGeolocation();
+                        }
+                    }
+                }
+            });
         });
+        
+        // Function to translate UI elements
+        function translateUIElements() {
+            // Get the current language
+            const language = localStorage.getItem('clime-mate-language') || 'en';
+            
+            // Simple translations for UI elements
+            const translations = {
+                en: {
+                    cityPlaceholder: "Enter city",
+                    searchButton: "Search",
+                    useMyLocation: "Use My Location",
+                    settings: "Settings"
+                },
+                es: {
+                    cityPlaceholder: "Ingrese ciudad",
+                    searchButton: "Buscar",
+                    useMyLocation: "Usar Mi Ubicación",
+                    settings: "Configuración"
+                },
+                fr: {
+                    cityPlaceholder: "Entrer ville",
+                    searchButton: "Rechercher",
+                    useMyLocation: "Utiliser Ma Position",
+                    settings: "Paramètres"
+                },
+                de: {
+                    cityPlaceholder: "Stadt eingeben",
+                    searchButton: "Suchen",
+                    useMyLocation: "Meinen Standort verwenden",
+                    settings: "Einstellungen"
+                }
+            };
+            
+            // Apply translations if available for the current language
+            if (translations[language]) {
+                document.getElementById('city').placeholder = translations[language].cityPlaceholder;
+                document.querySelector('button[onclick="getWeather()"]').textContent = translations[language].searchButton;
+                document.getElementById('geo-location').textContent = translations[language].useMyLocation;
+                document.getElementById('settings-button').textContent = translations[language].settings;
+            }
+        }
     </script>
 </body>
 </html>

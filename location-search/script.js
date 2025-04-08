@@ -7,7 +7,7 @@ function getWeather() {
         alert('Please enter a city');
         return;
     }
-  
+
     const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`;
     const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=imperial`;
   
@@ -191,7 +191,7 @@ function displayHourlyForecast(hourlyData) {
         const temperature = Math.round(item.main.temp);
         const iconCode = item.weather[0].icon;
         const iconUrl = `https://openweathermap.org/img/wn/${iconCode}.png`;
-  
+
         const hourlyItemHtml = `
             <div class="hourly-item">
                 <span>${hourFormatted}</span>
