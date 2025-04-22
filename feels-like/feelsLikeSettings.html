@@ -6,30 +6,179 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clime-Mate Settings</title>
     <link rel="stylesheet" href="feelsLikeSettings-style.css">
+    <style>
+        .save-button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+        .save-button:hover {
+            background-color: #45a049;
+        }
+        #save-confirmation {
+            color: green;
+            margin-left: 10px;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
     <div id="settings-container">
         <button id="reset-button" onclick="window.location.href='feelsLike.html'">Clime-Mate</button>
         <div class="setting-item">
-            <span>Enable "Feels Like":</span>
+            <span id="feels-like-label">Enable "Feels Like":</span>
             <label class="toggle-switch">
                 <input type="checkbox" id="toggle-feels-like">
                 <span class="slider"></span>
             </label>
         </div>
         <div class="toggle-container">
-            <label for="alertToggle">Enable Weather Alerts:</label>
+            <label for="alertToggle" id="weather-alerts-label">Enable Weather Alerts:</label>
             <label class="toggle-switch">
                 <input type="checkbox" id="alert-toggle">
                 <span class="slider"></span>
             </label>
         </div>
+        
+        <!-- Temperature Unit Selector -->
+        <div class="setting-item">
+            <label for="temp-unit-selector" id="temp-unit-label">Temperature Unit:</label>
+            <select id="temp-unit-selector" class="setting-select">
+                <option value="fahrenheit">Fahrenheit (°F)</option>
+                <option value="celsius">Celsius (°C)</option>
+            </select>
+        </div>
+        
+        <!-- Language Selector -->
+        <div class="setting-item">
+            <label for="language-selector" id="language-label">Language:</label>
+            <select id="language-selector" class="setting-select">
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+            </select>
+        </div>
+        
+        <!-- Save Button -->
+        <div class="setting-item">
+            <button id="save-settings" class="save-button">Save Settings</button>
+            <span id="save-confirmation" style="display: none;">Settings saved successfully!</span>
+        </div>
     </div>
 
     <script>
+        // Constants for localStorage keys (matching the main app)
+        const TEMP_UNIT_KEY = 'clime-mate-temp-unit';
+        const LANGUAGE_KEY = 'clime-mate-language';
+        
+        // Function to translate text based on user preference
+        function translateText(key) {
+            // Simple translations for settings page
+            const translations = {
+                enableFeelsLike: {
+                    en: "Enable \"Feels Like\":",
+                    es: "Activar \"Sensación Térmica\":",
+                    fr: "Activer \"Ressenti\":",
+                    de: "Aktivieren \"Gefühlt Wie\":"
+                },
+                enableWeatherAlerts: {
+                    en: "Enable Weather Alerts:",
+                    es: "Activar Alertas Meteorológicas:",
+                    fr: "Activer les Alertes Météo:",
+                    de: "Wetterwarnungen aktivieren:"
+                },
+                temperatureUnit: {
+                    en: "Temperature Unit:",
+                    es: "Unidad de Temperatura:",
+                    fr: "Unité de Température:",
+                    de: "Temperatureinheit:"
+                },
+                language: {
+                    en: "Language:",
+                    es: "Idioma:",
+                    fr: "Langue:",
+                    de: "Sprache:"
+                },
+                saveSettings: {
+                    en: "Save Settings",
+                    es: "Guardar Configuración",
+                    fr: "Enregistrer les Paramètres",
+                    de: "Einstellungen Speichern"
+                },
+                settingsSaved: {
+                    en: "Settings saved successfully!",
+                    es: "¡Configuración guardada con éxito!",
+                    fr: "Paramètres enregistrés avec succès!",
+                    de: "Einstellungen erfolgreich gespeichert!"
+                }
+            };
+            
+            const language = localStorage.getItem(LANGUAGE_KEY) || 'en';
+            
+            if (translations[key] && translations[key][language]) {
+                return translations[key][language];
+            }
+            
+            // Fallback to English if translation not found
+            return translations[key]?.en || key;
+        }
+        
+        // Function to apply translations to the settings page
+        function applyTranslations() {
+            document.getElementById('feels-like-label').textContent = translateText('enableFeelsLike');
+            document.getElementById('weather-alerts-label').textContent = translateText('enableWeatherAlerts');
+            document.getElementById('temp-unit-label').textContent = translateText('temperatureUnit');
+            document.getElementById('language-label').textContent = translateText('language');
+            document.getElementById('save-settings').textContent = translateText('saveSettings');
+            document.getElementById('save-confirmation').textContent = translateText('settingsSaved');
+        }
+        
+        // Function to save settings and show confirmation
+        function saveSettings() {
+            // Save "Feels Like" toggle setting
+            const toggleFeelsLike = document.getElementById('toggle-feels-like');
+            localStorage.setItem('showFeelsLike', toggleFeelsLike.checked);
+            
+            // Save temperature unit setting
+            const tempUnitSelector = document.getElementById('temp-unit-selector');
+            localStorage.setItem(TEMP_UNIT_KEY, tempUnitSelector.value);
+            
+            // Save language setting
+            const languageSelector = document.getElementById('language-selector');
+            localStorage.setItem(LANGUAGE_KEY, languageSelector.value);
+            
+            // Apply translations with the new language
+            applyTranslations();
+            
+            // Show confirmation message
+            const saveConfirmation = document.getElementById('save-confirmation');
+            saveConfirmation.style.display = 'inline';
+            
+            // Hide confirmation message after 3 seconds
+            setTimeout(() => {
+                saveConfirmation.style.display = 'none';
+            }, 3000);
+            
+            // Send a message to the parent window to update if in an iframe
+            try {
+                window.parent.postMessage({ type: 'settings-updated' }, '*');
+            } catch (e) {
+                console.log('Could not send message to parent window:', e);
+            }
+        }
+        
         document.addEventListener('DOMContentLoaded', function() {
             const toggleFeelsLike = document.getElementById('toggle-feels-like');
-            const toggleWeatherAlerts = document.getElementById('toggle-weather-alerts');
+            const toggleWeatherAlerts = document.getElementById('alert-toggle');
+            const tempUnitSelector = document.getElementById('temp-unit-selector');
+            const languageSelector = document.getElementById('language-selector');
+            const saveButton = document.getElementById('save-settings');
 
             // Initialize "Feels Like" toggle
             const storedFeelsLike = localStorage.getItem('showFeelsLike');
@@ -37,20 +186,34 @@
                 toggleFeelsLike.checked = true;
                 document.body.classList.add('show-feels-like');
             }
-
-            toggleFeelsLike.addEventListener('change', function() {
-                if (toggleFeelsLike.checked) {
-                    localStorage.setItem('showFeelsLike', 'true');
-                    document.body.classList.add('show-feels-like');
-                } else {
-                    localStorage.setItem('showFeelsLike', 'false');
-                    document.body.classList.remove('show-feels-like');
-                }
+            
+            // Initialize weather alerts toggle
+            const storedWeatherAlerts = localStorage.getItem('weatherAlerts');
+            if (storedWeatherAlerts === 'true') {
+                toggleWeatherAlerts.checked = true;
+            }
+            
+            // Initialize temperature unit selector
+            const savedTempUnit = localStorage.getItem(TEMP_UNIT_KEY) || 'fahrenheit';
+            tempUnitSelector.value = savedTempUnit;
+            
+            // Initialize language selector
+            const savedLanguage = localStorage.getItem(LANGUAGE_KEY) || 'en';
+            languageSelector.value = savedLanguage;
+            
+            // Apply translations based on current language
+            applyTranslations();
+            
+            // Add event listener for save button
+            saveButton.addEventListener('click', saveSettings);
+            
+            // Add event listener for weather alerts toggle
+            toggleWeatherAlerts.addEventListener('change', function() {
+                localStorage.setItem('weatherAlerts', toggleWeatherAlerts.checked);
             });
-
         });
     </script>
-    <script src = "feelsLikeDisplay.js"></script>
-    <script src = "feelsLike-weatherAlerts.js"></script>
+    <script src="feelsLikeDisplay.js"></script>
+    <script src="feelsLike-weatherAlerts.js"></script>
 </body>
 </html>

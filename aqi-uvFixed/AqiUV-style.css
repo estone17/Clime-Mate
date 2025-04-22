@@ -1,0 +1,222 @@
+/* General body styles */
+body {
+    background: #3498db; /* Blue background */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    overflow-y: auto;
+    margin: 0;
+}
+
+/* Main weather container */
+#weather-container {
+    background: rgba(255, 255, 255, 0.2);
+    max-width: 450px;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+    overflow: hidden;
+    padding-bottom: 10px; /* Reduce bottom padding */
+}
+
+/* Heading style */
+h2 {
+    color: #fff;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+/* Input and Button styles */
+input, button {
+    width: calc(100% - 20px);
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 10px;
+    border: 1px solid #fff;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+input {
+    background-color: rgba(255, 255, 255, 0.3);
+    color: #fff;
+}
+
+button {
+    background: #2980b9; /* Blue button */
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+button:hover {
+    background: #1f648f; /* Darker blue on hover */
+}
+
+button:focus {
+    outline: none;
+}
+
+/* Weather display area */
+#temp-div p {
+    font-size: 70px;
+    font-weight: bold;
+    color: #fff;
+    margin: 10px 0; /* Reduced margin for tighter spacing */
+}
+
+#weather-info {
+    font-size: 22px;
+    color: #fff;
+    margin: 5px 0; /* Reduced margin to bring elements closer */
+}
+
+/* Weather icon styling */
+#weather-icon {
+    width: 150px;
+    height: 150px;
+    margin: 20px auto;
+    display: none; /* Hide the icon by default */
+}
+
+/* Feels-like element styling */
+#feels-like {
+    font-size: 20px;
+    color: #fff;
+    margin-top: 10px;
+}
+
+/* Hourly forecast container */
+#hourly-forecast {
+    margin-top: 50px;
+    overflow-x: auto;
+    white-space: nowrap;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 20px; /* Adds space between the icons and the scroll bar */
+}
+
+.hourly-item {
+    flex: 0 0 auto;
+    width: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 10px;
+    color: white;
+    margin-bottom: 20px; /* Adds space at the bottom of each hourly item */
+}
+
+.hourly-item img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 8px;
+}
+
+.hourly-item span {
+    font-size: 14px;
+}
+
+/* Styling for hourly heading */
+#hourly-heading {
+    font-size: 18px;
+    color: #fff;
+    margin-top: 10px;
+}
+
+/* Additional Button Style for Geolocation */
+button#geo-location {
+    background: #2980b9; /* Blue button */
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+button#geo-location:hover {
+    background: #1f648f; /* Darker blue on hover */
+}
+
+/* Style for the reset button (title) */
+#reset-button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 2em;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#reset-button:hover {
+    text-shadow: 0 0 10px #1f648f; /* Add blue glowing shadow */
+    transform: scale(1.1); /* Slightly enlarge the button */
+    text-decoration: underline;
+}
+
+/* Advisory message styling */
+.advisory-message {
+    background-color: #ffcccb; /* Light red background */
+    color: #900; /* Dark red text */
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Color bar styling */
+.color-bar {
+    height: 10px;
+    width: 100%;
+    margin: 5px 0;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Sunrise, Sunset, and Upcoming Event Text Styling */
+#details-content p {
+    color: #fff; /* Set text color to white */
+}
+
+/* Add drop shadow to weather display elements */
+#temp-div p, 
+#weather-info, 
+#feels-like, 
+#hourly-forecast, 
+#details-content p {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Subtle drop shadow */
+}
+
+/* Date display styling */
+#date-div p {
+    font-size: 20px; /* Adjust font size */
+    font-weight: bold; /* Make text bold */
+    color: #fff; /* White text color */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Add drop shadow */
+    margin: 10px 0; /* Add spacing */
+    text-align: center; /* Center align the text */
+}
+
+/* Responsive Layout */
+@media (max-width: 600px) {
+    #weather-container {
+        padding: 15px;
+        max-width: 95%;
+    }
+
+    #temp-div p {
+        font-size: 50px;
+    }
+
+    .hourly-item {
+        width: 60px;
+    }
+}

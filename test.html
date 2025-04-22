@@ -114,56 +114,79 @@
 
     <!-- Translation script -->
     <script>
+      // Function to update UI translations
+      function updateUITranslations() {
+        if (typeof translateText === 'function') {
+          // Update weather alerts title
+          const weatherAlertsTitle = document.getElementById('weather-alerts-title');
+          if (weatherAlertsTitle) {
+            weatherAlertsTitle.textContent = translateText('weatherAlerts');
+          }
+          
+          // Update enable alerts label
+          const enableAlertsLabel = document.getElementById('enable-alerts-label');
+          if (enableAlertsLabel) {
+            enableAlertsLabel.textContent = translateText('enableAlerts') + ':';
+          }
+          
+          // Update search form placeholders
+          const latInput = document.getElementById('lat');
+          const lonInput = document.getElementById('lon');
+          const searchBtn = document.getElementById('searchBtn');
+          const weatherAlert = document.getElementById('weather-alert');
+          
+          if (latInput) {
+            latInput.placeholder = translateText('searchLatitude');
+          }
+          
+          if (lonInput) {
+            lonInput.placeholder = translateText('searchLongitude');
+          }
+          
+          if (searchBtn) {
+            searchBtn.textContent = translateText('search');
+          }
+          
+          if (weatherAlert) {
+            weatherAlert.textContent = translateText('locationAlert');
+          }
+          
+          // Update navigation links
+          const homeLink = document.querySelector('a.nav-link[aria-current="page"]');
+          if (homeLink) {
+            homeLink.textContent = translateText('home');
+          }
+          
+          const settingsLink = document.querySelector('a.nav-link[href="settings.html"]');
+          if (settingsLink) {
+            settingsLink.textContent = translateText('settings');
+          }
+        }
+      }
+      
       // Apply translations to UI elements
       document.addEventListener('DOMContentLoaded', function() {
         // Wait for settings.js to load
         setTimeout(function() {
-          if (typeof translateText === 'function') {
-            // Update weather alerts title
-            const weatherAlertsTitle = document.getElementById('weather-alerts-title');
-            if (weatherAlertsTitle) {
-              weatherAlertsTitle.textContent = translateText('weatherAlerts');
+          updateUITranslations();
+          
+          // Listen for settings changes from the iframe
+          window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'settings-updated') {
+              console.log('Settings updated from iframe, refreshing UI');
+              
+              // Update translations
+              updateUITranslations();
+              
+              // Refresh weather data if we have coordinates
+              const lat = document.getElementById('lat').value;
+              const lon = document.getElementById('lon').value;
+              if (lat && lon && document.getElementById('searchBtn')) {
+                // Simulate a click on the search button to refresh the weather data
+                document.getElementById('searchBtn').click();
+              }
             }
-            
-            // Update enable alerts label
-            const enableAlertsLabel = document.getElementById('enable-alerts-label');
-            if (enableAlertsLabel) {
-              enableAlertsLabel.textContent = translateText('enableAlerts') + ':';
-            }
-            
-            // Update search form placeholders
-            const latInput = document.getElementById('lat');
-            const lonInput = document.getElementById('lon');
-            const searchBtn = document.getElementById('searchBtn');
-            const weatherAlert = document.getElementById('weather-alert');
-            
-            if (latInput) {
-              latInput.placeholder = translateText('searchLatitude');
-            }
-            
-            if (lonInput) {
-              lonInput.placeholder = translateText('searchLongitude');
-            }
-            
-            if (searchBtn) {
-              searchBtn.textContent = translateText('search');
-            }
-            
-            if (weatherAlert) {
-              weatherAlert.textContent = translateText('locationAlert');
-            }
-            
-            // Update navigation links
-            const homeLink = document.querySelector('a.nav-link[aria-current="page"]');
-            if (homeLink) {
-              homeLink.textContent = translateText('home');
-            }
-            
-            const settingsLink = document.querySelector('a.nav-link[href="settings.html"]');
-            if (settingsLink) {
-              settingsLink.textContent = translateText('settings');
-            }
-          }
+          });
         }, 500); // Give time for settings.js to load
       });
     </script>

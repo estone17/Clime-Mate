@@ -1,0 +1,173 @@
+<!-- This is the HTML file for the settings page of the Clime-Mate extension. It allows users to toggle the display of "Feels Like" temperature. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clime-Mate Settings</title>
+    <link rel="stylesheet" href="multipleLocationsSettings-style.css">
+</head>
+<body>
+    <div id="settings-container">
+        <button id="reset-button" onclick="window.location.href='multipleLocations.html'">Clime-Mate</button>
+        <div class="toggle-container">
+            <span>Enable "Feels Like"</span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="toggle-feels-like">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="toggle-container">
+            <label for="alertToggle">Enable Weather Alerts</label>
+            <label class="toggle-switch">
+                <input type="checkbox" id="alert-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="toggle-container">
+            <span>Enable AQI and UV </span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="toggle-aqi">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="toggle-container">
+            <label for="add-location">Add Location:</label>
+            <input type="text" id="add-location" placeholder="Enter city name">
+            <button id="add-location-button">Add</button>
+        </div>
+        <div id="saved-locations-container">
+            <h3>Saved Locations</h3>
+            <ul id="saved-locations-list" style="max-height: 200px; overflow-y: auto;"></ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleFeelsLike = document.getElementById('toggle-feels-like');
+            const toggleWeatherAlerts = document.getElementById('alert-toggle');
+            const toggleAQI = document.getElementById('toggle-aqi');
+
+            // Initialize "Feels Like" toggle
+            const storedFeelsLike = localStorage.getItem('showFeelsLike');
+            if (storedFeelsLike === 'true') {
+                toggleFeelsLike.checked = true;
+                document.body.classList.add('show-feels-like');
+            }
+
+            toggleFeelsLike.addEventListener('change', function() {
+                if (toggleFeelsLike.checked) {
+                    localStorage.setItem('showFeelsLike', 'true');
+                    document.body.classList.add('show-feels-like');
+                } else {
+                    localStorage.setItem('showFeelsLike', 'false');
+                    document.body.classList.remove('show-feels-like');
+                }
+            });
+
+            // Initialize Weather Alerts toggle
+            const storedWeatherAlerts = localStorage.getItem('enableWeatherAlerts');
+            if (storedWeatherAlerts === 'true') {
+                toggleWeatherAlerts.checked = true;
+            }
+
+            toggleWeatherAlerts.addEventListener('change', function() {
+                if (toggleWeatherAlerts.checked) {
+                    localStorage.setItem('enableWeatherAlerts', 'true');
+                    // Ensure Notification API is available
+                    if ('Notification' in window) {
+                        if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+                            Notification.requestPermission().then(permission => {
+                                if (permission === 'granted') {
+                                    console.log('Notification permission granted.');
+                                } else {
+                                    console.warn('Notification permission not granted.');
+                                }
+                            }).catch(error => {
+                                console.error('Error requesting notification permission:', error);
+                            });
+                        }
+                    } else {
+                        console.error('Notification API is not supported by this browser.');
+                    }
+                } else {
+                    localStorage.setItem('enableWeatherAlerts', 'false');
+                }
+            });
+
+            // Initialize AQI and UV toggle
+            const storedAQI = localStorage.getItem('enableAQI');
+            if (storedAQI === 'true') {
+                toggleAQI.checked = true;
+            }
+
+            toggleAQI.addEventListener('change', function() {
+                if (toggleAQI.checked) {
+                    localStorage.setItem('enableAQI', 'true');
+                } else {
+                    localStorage.setItem('enableAQI', 'false');
+                }
+            });
+
+            // Function to render saved locations list
+            function renderSavedLocationsList() {
+                const savedLocations = JSON.parse(localStorage.getItem('savedLocations')) || [];
+                const list = document.getElementById('saved-locations-list');
+                list.innerHTML = ''; // Clear existing list
+
+                savedLocations.forEach(location => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = location;
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.onclick = () => {
+                        removeLocation(location);
+                        renderSavedLocationsList(); // Update the list after deletion
+                    };
+
+                    listItem.appendChild(deleteButton);
+                    list.appendChild(listItem);
+                });
+            }
+
+            // Event listener for adding a location
+            document.getElementById('add-location-button').addEventListener('click', function () {
+                const locationInput = document.getElementById('add-location');
+                const location = locationInput.value.trim();
+                if (location) {
+                    addLocation(location);
+                    locationInput.value = '';
+                    renderSavedLocationsList(); // Update the list after adding
+                } else {
+                    alert('Please enter a valid city name.');
+                }
+            });
+
+            // Ensure the `addLocation` function is accessible
+            function addLocation(location) {
+                const savedLocations = JSON.parse(localStorage.getItem('savedLocations')) || [];
+                if (!savedLocations.includes(location)) {
+                    savedLocations.push(location);
+                    localStorage.setItem('savedLocations', JSON.stringify(savedLocations));
+                    console.log(`Location "${location}" added successfully.`);
+                } else {
+                    console.log(`Location "${location}" already exists.`);
+                }
+            }
+
+            // Ensure the `removeLocation` function is accessible
+            function removeLocation(location) {
+                const savedLocations = JSON.parse(localStorage.getItem('savedLocations')) || [];
+                const updatedLocations = savedLocations.filter(loc => loc !== location);
+                localStorage.setItem('savedLocations', JSON.stringify(updatedLocations));
+                console.log(`Location "${location}" removed successfully.`);
+            }
+
+            // Initialize saved locations list on page load
+            renderSavedLocationsList();
+        });
+    </script>
+    <script src = "multipleLocationsDisplay.js"></script>
+</body>
+</html>

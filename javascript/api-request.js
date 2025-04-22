@@ -14,98 +14,105 @@ const longitude = document.getElementById('lon');
 const searchBtn = document.getElementById('searchBtn');
 const weatherContainer = document.getElementById('weather-container');
 const todayContainer = document.getElementById('today-container');
+const geoLocationBtn = document.getElementById('geo-location');
 
 
 
-if (searchBtn){
-    searchBtn.addEventListener('click', async function(event){
+if (geoLocationBtn){
+    geoLocationBtn.addEventListener('click', async function(event){
 
-        if(latitude.value.length === 0 || longitude.value.length === 0){
-            weatherAlert.classList.remove('hidden');
-            return;
-        }
+        // if(latitude.value.length === 0 || longitude.value.length === 0){
+        //     weatherAlert.classList.remove('hidden');
+        //     return;
+        // }
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(async function (position) {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+
+                const weatherData = await fetchWeatherData(lat, lon);
+
+
+                if(weatherData === null){
+                    weatherAlert.classList.remove('hidden');
+                    todayContainer.classList.add('hidden');
+                    return;
+               }
+            
+               weatherAlert.classList.add('hidden');
+               todayContainer.classList.remove('hidden');
+            
+               weatherContainer.innerHTML = '';
+            
+               for(i = 0; i <7; i++){
+                newHigh = convertTemperature(parseInt(weatherData.daily.temperature_2m_max[i]));
+                newLow = convertTemperature(parseInt(weatherData.daily.temperature_2m_min[i]));
         
-        
-    
-       const weatherData = await fetchWeatherData(latitude.value, longitude.value);
-       
-       if(weatherData === null){
-            weatherAlert.classList.remove('hidden');
-            todayContainer.classList.add('hidden');
-            return;
-       }
-    
-       weatherAlert.classList.add('hidden');
-       todayContainer.classList.remove('hidden');
-    
-       weatherContainer.innerHTML = '';
-    
-       for(i = 0; i <7; i++){
-        newHigh = convertTemperature(parseInt(weatherData.daily.temperature_2m_max[i]));
-        newLow = convertTemperature(parseInt(weatherData.daily.temperature_2m_min[i]));
-    
-    
-        // Get the original temperature in Celsius for weather icon determination
-        const originalHighTemp = parseInt(weatherData.daily.temperature_2m_max[i]);
-        
-        if(weatherData.daily.snowfall_sum[i] > 10){
-            if(i == 0){
-                const todayCard = createTodayWeatherCard(weatherData.daily.time[0],"images/icons/snowflake.png",newHigh,newLow,weatherData.daily.rain_sum[0],weatherData.daily.snowfall_sum[0],weatherData.daily.sunrise[0].split("T")[1],weatherData.daily.sunset[0].split("T")[1]);
-                todayContainer.innerHTML = ''; // Clear previous content
-                todayContainer.appendChild(todayCard);
-            }
-    
-            weatherContainer.appendChild(createWeatherCard(weatherData.daily.time[i], "images/icons/snowflake.png", newHigh, newLow, weatherData.daily.rain_sum[i] , weatherData.daily.snowfall_sum[i], weatherData.daily.sunrise[i].split('T')[1], weatherData.daily.sunset[i].split('T')[1]));
-            console.log("test 1");
-    
-        }
-        else if(weatherData.daily.rain_sum[i] > 40){
-            if(i == 0){
-                const todayCard = createTodayWeatherCard(weatherData.daily.time[0],"images/icons/rainy.png",newHigh,newLow,weatherData.daily.rain_sum[0],weatherData.daily.snowfall_sum[0],weatherData.daily.sunrise[0].split("T")[1],weatherData.daily.sunset[0].split("T")[1]);
-                todayContainer.innerHTML = ''; // Clear previous content
-                todayContainer.appendChild(todayCard);
-            }
-    
-            weatherContainer.appendChild(createWeatherCard(weatherData.daily.time[i], "images/icons/rainy.png", newHigh, newLow, weatherData.daily.rain_sum[i] , weatherData.daily.snowfall_sum[i], weatherData.daily.sunrise[i].split('T')[1], weatherData.daily.sunset[i].split('T')[1]));
-            console.log("test 2");
-        }
-        // Use the original Celsius temperature for icon determination
-        else if (originalHighTemp >= 21){ // 21°C ≈ 70°F
-            if(i == 0){
-                const todayCard = createTodayWeatherCard(weatherData.daily.time[0],"images/icons/sun.png",newHigh,newLow,weatherData.daily.rain_sum[0],weatherData.daily.snowfall_sum[0],weatherData.daily.sunrise[0].split("T")[1],weatherData.daily.sunset[0].split("T")[1]);
-                todayContainer.innerHTML = ''; // Clear previous content
-                todayContainer.appendChild(todayCard);
-            }
-    
-            weatherContainer.appendChild(createWeatherCard(weatherData.daily.time[i], "images/icons/sun.png", newHigh, newLow, weatherData.daily.rain_sum[i] , weatherData.daily.snowfall_sum[i], weatherData.daily.sunrise[i].split('T')[1], weatherData.daily.sunset[i].split('T')[1]));
-            console.log("test 3");
-        }
-        else if(originalHighTemp < 21 && originalHighTemp > 4){ // 4°C ≈ 40°F, 21°C ≈ 70°F
-            if(i == 0){
-                const todayCard = createTodayWeatherCard(weatherData.daily.time[0],"images/icons/semi-cloudy-day.png",newHigh,newLow,weatherData.daily.rain_sum[0],weatherData.daily.snowfall_sum[0],weatherData.daily.sunrise[0].split("T")[1],weatherData.daily.sunset[0].split("T")[1]);
-                todayContainer.innerHTML = ''; // Clear previous content
-                todayContainer.appendChild(todayCard);
-            }
-    
-            weatherContainer.appendChild(createWeatherCard(weatherData.daily.time[i], "images/icons/semi-cloudy-day.png", newHigh, newLow, weatherData.daily.rain_sum[i] , weatherData.daily.snowfall_sum[i], weatherData.daily.sunrise[i].split('T')[1], weatherData.daily.sunset[i].split('T')[1]));
-            console.log("test 4");
-        }
-        else{
-            if(i == 0){
-                const todayCard = createTodayWeatherCard(weatherData.daily.time[0],"images/icons/cloudy-day.png",newHigh,newLow,weatherData.daily.rain_sum[0],weatherData.daily.snowfall_sum[0],weatherData.daily.sunrise[0].split("T")[1],weatherData.daily.sunset[0].split("T")[1]);
-                todayContainer.innerHTML = ''; // Clear previous content
-                todayContainer.appendChild(todayCard);
-            }
-    
-            weatherContainer.appendChild(createWeatherCard(weatherData.daily.time[i], "images/icons/cloudy-day.png", newHigh, newLow, weatherData.daily.rain_sum[i] , weatherData.daily.snowfall_sum[i], weatherData.daily.sunrise[i].split('T')[1], weatherData.daily.sunset[i].split('T')[1]));
-            console.log("test 5");
-        }
-    
-       }
-    
-    
-        
-        
+                console.log(newHigh);
+                console.log(newLow);
+            
+            
+                // Get the original temperature in Celsius for weather icon determination
+                const originalHighTemp = parseInt(weatherData.daily.temperature_2m_max[i]);
+                
+                if(weatherData.daily.snowfall_sum[i] > 10){
+                    if(i == 0){
+                        const todayCard = createTodayWeatherCard(weatherData.daily.time[0],"images/icons/snowflake.png",newHigh,newLow,weatherData.daily.rain_sum[0],weatherData.daily.snowfall_sum[0],weatherData.daily.sunrise[0].split("T")[1],weatherData.daily.sunset[0].split("T")[1]);
+                        todayContainer.innerHTML = ''; // Clear previous content
+                        todayContainer.appendChild(todayCard);
+                    }
+            
+                    weatherContainer.appendChild(createWeatherCard(weatherData.daily.time[i], "images/icons/snowflake.png", newHigh, newLow, weatherData.daily.rain_sum[i] , weatherData.daily.snowfall_sum[i], weatherData.daily.sunrise[i].split('T')[1], weatherData.daily.sunset[i].split('T')[1]));
+                    console.log("test 1");
+            
+                }
+                else if(weatherData.daily.rain_sum[i] > 40){
+                    if(i == 0){
+                        const todayCard = createTodayWeatherCard(weatherData.daily.time[0],"images/icons/rainy.png",newHigh,newLow,weatherData.daily.rain_sum[0],weatherData.daily.snowfall_sum[0],weatherData.daily.sunrise[0].split("T")[1],weatherData.daily.sunset[0].split("T")[1]);
+                        todayContainer.innerHTML = ''; // Clear previous content
+                        todayContainer.appendChild(todayCard);
+                    }
+            
+                    weatherContainer.appendChild(createWeatherCard(weatherData.daily.time[i], "images/icons/rainy.png", newHigh, newLow, weatherData.daily.rain_sum[i] , weatherData.daily.snowfall_sum[i], weatherData.daily.sunrise[i].split('T')[1], weatherData.daily.sunset[i].split('T')[1]));
+                    console.log("test 2");
+                }
+                // Use the original Celsius temperature for icon determination
+                else if (originalHighTemp >= 21){ // 21°C ≈ 70°F
+                    if(i == 0){
+                        const todayCard = createTodayWeatherCard(weatherData.daily.time[0],"images/icons/sun.png",newHigh,newLow,weatherData.daily.rain_sum[0],weatherData.daily.snowfall_sum[0],weatherData.daily.sunrise[0].split("T")[1],weatherData.daily.sunset[0].split("T")[1]);
+                        todayContainer.innerHTML = ''; // Clear previous content
+                        todayContainer.appendChild(todayCard);
+                    }
+            
+                    weatherContainer.appendChild(createWeatherCard(weatherData.daily.time[i], "images/icons/sun.png", newHigh, newLow, weatherData.daily.rain_sum[i] , weatherData.daily.snowfall_sum[i], weatherData.daily.sunrise[i].split('T')[1], weatherData.daily.sunset[i].split('T')[1]));
+                    console.log("test 3");
+                }
+                else if(originalHighTemp < 21 && originalHighTemp > 4){ // 4°C ≈ 40°F, 21°C ≈ 70°F
+                    if(i == 0){
+                        const todayCard = createTodayWeatherCard(weatherData.daily.time[0],"images/icons/semi-cloudy-day.png",newHigh,newLow,weatherData.daily.rain_sum[0],weatherData.daily.snowfall_sum[0],weatherData.daily.sunrise[0].split("T")[1],weatherData.daily.sunset[0].split("T")[1]);
+                        todayContainer.innerHTML = ''; // Clear previous content
+                        todayContainer.appendChild(todayCard);
+                    }
+            
+                    weatherContainer.appendChild(createWeatherCard(weatherData.daily.time[i], "images/icons/semi-cloudy-day.png", newHigh, newLow, weatherData.daily.rain_sum[i] , weatherData.daily.snowfall_sum[i], weatherData.daily.sunrise[i].split('T')[1], weatherData.daily.sunset[i].split('T')[1]));
+                    console.log("test 4");
+                }
+                else{
+                    if(i == 0){
+                        const todayCard = createTodayWeatherCard(weatherData.daily.time[0],"images/icons/cloudy-day.png",newHigh,newLow,weatherData.daily.rain_sum[0],weatherData.daily.snowfall_sum[0],weatherData.daily.sunrise[0].split("T")[1],weatherData.daily.sunset[0].split("T")[1]);
+                        todayContainer.innerHTML = ''; // Clear previous content
+                        todayContainer.appendChild(todayCard);
+                    }
+            
+                    weatherContainer.appendChild(createWeatherCard(weatherData.daily.time[i], "images/icons/cloudy-day.png", newHigh, newLow, weatherData.daily.rain_sum[i] , weatherData.daily.snowfall_sum[i], weatherData.daily.sunrise[i].split('T')[1], weatherData.daily.sunset[i].split('T')[1]));
+                    console.log("test 5");
+                }
+            
+               }
+
+            });
+        }  
     
     });
 }
