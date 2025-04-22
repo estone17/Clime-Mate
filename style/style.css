@@ -440,3 +440,346 @@ iframe {
     border: none;
     border-radius: 16px;
 }
+
+.weekly-text{
+    text-align: center;
+}
+
+.alert-config {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* optional: aligns items vertically */
+    padding: 0 1rem; /* optional: adds spacing on sides */
+  }
+
+  hr{
+    margin-bottom: 30px;
+  }
+
+
+/* Styling for weather aqi uv*/
+
+.aqi-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Main weather container */
+#weather-container-aqi {
+    background: rgba(255, 255, 255, 0.2);
+    max-width: 90%;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+    overflow: hidden;
+    padding-bottom: 10px; /* Reduce bottom padding */
+    margin-bottom: 50px;
+}
+
+
+/* Input and Button styles */
+.aqi-input, .aqi-btn {
+    width: calc(100% - 20px);
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 10px;
+    border: 1px solid #fff;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.aqi-input {
+    background-color: rgba(255, 255, 255, 0.3);
+    color: var(--bs-gray-600);
+}
+
+.aqi-btn {
+    background: #2980b9; /* Blue button */
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.aqi-btn:hover {
+    background: #1f648f; /* Darker blue on hover */
+}
+
+.aqi-btn:focus {
+    outline: none;
+}
+
+/* Weather display area */
+#temp-div p {
+    font-size: 70px;
+    font-weight: bold;
+    color: var(--bs-gray-600);
+    margin: 10px 0; /* Reduced margin for tighter spacing */
+}
+
+#weather-info {
+    font-size: 22px;
+    color: var(--bs-gray-600);
+    margin: 5px 0; /* Reduced margin to bring elements closer */
+}
+
+/* Weather icon styling */
+#weather-icon {
+    width: 150px;
+    height: 150px;
+    margin: 20px auto;
+    display: none; /* Hide the icon by default */
+}
+
+/* Feels-like element styling */
+#feels-like {
+    font-size: 20px;
+    color: var(--bs-gray-600);
+    margin-top: 10px;
+}
+
+/* Hourly forecast container */
+#hourly-forecast {
+    margin-top: 50px;
+    overflow-x: auto;
+    white-space: nowrap;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 20px; /* Adds space between the icons and the scroll bar */
+}
+
+.hourly-item {
+    flex: 0 0 auto;
+    width: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 10px;
+    color: var(--bs-gray-600);
+    margin-bottom: 20px; /* Adds space at the bottom of each hourly item */
+}
+
+.hourly-item img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 8px;
+}
+
+.hourly-item span {
+    font-size: 14px;
+}
+
+/* Styling for hourly heading */
+#hourly-heading {
+    font-size: 18px;
+    color: var(--bs-gray-600);
+    margin-top: 10px;
+}
+
+/* Additional Button Style for Geolocation */
+button#geo-location {
+    background: #2980b9; /* Blue button */
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+button#geo-location:hover {
+    background: #1f648f; /* Darker blue on hover */
+}
+
+/* Style for the reset button (title) */
+#reset-button {
+    background: none;
+    border: none;
+    color: var(--bs-gray-600);
+    font-size: 2em;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#reset-button:hover {
+    text-shadow: 0 0 10px #1f648f; /* Add blue glowing shadow */
+    transform: scale(1.1); /* Slightly enlarge the button */
+    text-decoration: underline;
+}
+
+/* Advisory message styling */
+.advisory-message {
+    background-color: #ffcccb; /* Light red background */
+    color: #900; /* Dark red text */
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Color bar styling */
+.color-bar {
+    height: 10px;
+    width: 100%;
+    margin: 5px 0;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Sunrise, Sunset, and Upcoming Event Text Styling */
+#details-content p {
+    color: var(--bs-gray-600); /* Set text color to white */
+}
+
+/* Add drop shadow to weather display elements */
+#temp-div p, 
+#weather-info, 
+#feels-like, 
+#hourly-forecast, 
+#details-content p {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Subtle drop shadow */
+}
+
+/* Date display styling */
+#date-div p {
+    font-size: 20px; /* Adjust font size */
+    font-weight: bold; /* Make text bold */
+    color: var(--bs-gray-600); /* White text color */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Add drop shadow */
+    margin: 10px 0; /* Add spacing */
+    text-align: center; /* Center align the text */
+}
+
+/* Responsive Layout */
+@media (max-width: 600px) {
+    #temp-div p {
+        font-size: 50px;
+    }
+
+    .hourly-item {
+        width: 60px;
+    }
+}
+
+/* aqi settings config */
+/* Style for the reset button (title) */
+
+/* Settings container styling */
+#settings-container {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    margin: 20px auto;
+    text-align: left;
+    color: var(--bs-gray-600);
+    font-size: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+/* Styling the Notification Toggle Switch */
+/* The container for the toggle */
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    margin: 20px 0;
+    font-weight: var(--bs-body-font-weight);
+}
+/* Toggle switch styling */
+.toggle-switch {
+    position: relative;
+    width: 50px;
+    height: 25px;
+}
+/* Hide default checkbox */
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0
+}
+/* Slider (switch) */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 25px;
+    transition: 0.5s;
+}
+/* Cicle inside the switch */
+.slider:before {
+    content: "";
+    position: absolute;
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    bottom: 4px;
+    background-color: #686868;
+    border-radius: 50%;
+    transition: .5s;
+}
+/* When checked, change background */
+.toggle-switch input:checked +.slider {
+    background-color: rgb(39, 216, 39);
+}
+/* Move the circle when checked */
+.toggle-switch input:checked +.slider:before{
+    transform: translateX(24px);
+}
+
+/* Styling the Weather Alert Notifications */
+/* Notification Box */
+.notification {
+    background-color: #fbff0088;
+    color: rgb(0, 0, 0);
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Subtle drop shadow */
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+}
+/* Error Message*/
+.error-message {
+    background-color: #fd3636;
+    color: #333;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-size: 16px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,.1);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Subtle drop shadow */
+}
+/*Hide notifications by default*/
+.hidden {
+    display: none;
+}
+
+.container {
+    max-width: 500px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,.5);
+    text-align: center
+}
