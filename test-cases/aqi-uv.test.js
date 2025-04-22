@@ -1,4 +1,4 @@
-const { getAQIandUV } = require('../aqi-uv/aqi-uv');
+const { getAQIandUV } = require('../aqi-uvFixed/aqi-uv');
 
 describe('getAQIandUV', () => {
     const mockFetch = jest.fn();

@@ -62,14 +62,17 @@ function renderSavedLocationsDropdown() {
     }
 }
 
-// Event listener for switching locations
-document.getElementById('saved-locations-dropdown').addEventListener('change', function () {
-    const selectedLocation = this.value;
-    if (selectedLocation) {
-        document.getElementById('city').value = selectedLocation;
-        getWeather();
-    }
-});
+// Add event listener for switching locations only if the dropdown exists
+const dropdown = document.getElementById('saved-locations-dropdown');
+if (dropdown) {
+    dropdown.addEventListener('change', function () {
+        const selectedLocation = this.value;
+        if (selectedLocation) {
+            document.getElementById('city').value = selectedLocation;
+            getWeather();
+        }
+    });
+}
 
 // Ensure the resetPage function clears the dropdown and other elements
 function resetPage() {
@@ -96,7 +99,6 @@ function resetPage() {
     renderSavedLocationsDropdown(); // Re-render the dropdown to reset its state
 }
 
-// Update the displayWeather function to remove logic for the "Add to Saved Locations" button
 async function displayWeather(data) {
     const dateDiv = document.getElementById('date-div'); // Reference the date div
 
@@ -120,3 +122,12 @@ async function displayWeather(data) {
 
 // Initialize saved locations dropdown on page load
 document.addEventListener('DOMContentLoaded', renderSavedLocationsDropdown);
+
+// Export functions for testing
+module.exports = {
+    loadSavedLocations,
+    saveLocations,
+    addLocation,
+    removeLocation,
+    renderSavedLocationsDropdown
+};
