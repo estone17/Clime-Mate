@@ -49,7 +49,52 @@ const translations = {
         tempUnit: "Temperature Unit",
         language: "Language",
         saveSettings: "Save Settings",
-        settingsSaved: "Settings saved successfully!"
+        settingsSaved: "Settings saved successfully!",
+        
+        // AQI and UV translations
+        airQualityIndex: "Air Quality Index (AQI)",
+        uvIndex: "UV Index",
+        aqiGood: "Good",
+        aqiModerate: "Moderate",
+        aqiUnhealthySensitive: "Unhealthy for Sensitive Groups",
+        aqiUnhealthy: "Unhealthy",
+        aqiVeryUnhealthy: "Very Unhealthy",
+        aqiHazardous: "Hazardous",
+        uvLow: "Low",
+        uvModerate: "Moderate",
+        uvHigh: "High",
+        uvVeryHigh: "Very High",
+        uvExtreme: "Extreme",
+        enableAQIUV: "Enable AQI and UV",
+        aqiAdvisory: "Air quality is hazardous. Avoid outdoor activities.",
+        uvAdvisory: "UV levels are dangerous. Wear sunscreen and limit sun exposure.",
+        dataUnavailable: "Data unavailable",
+        
+        // Feels Like translations
+        feelsLike: "Feels Like",
+        enableFeelsLike: "Enable Feels Like",
+        
+        // Weekly forecast translations
+        weeklyForecast: "Weekly Forecast",
+        
+        // Date and time translations
+        upcomingEvent: "Upcoming",
+        timeUntilNext: "Time until next event",
+        sunriseNextDay: "Sunrise (next day)",
+        
+        // Location translations
+        useMyLocation: "Use My Location",
+        enterCity: "Enter city",
+        dailyWeather: "Daily Weather",
+        noWeatherAlertsLocation: "No weather alerts for",
+        
+        // UI elements
+        moreDetails: "More Details",
+        hideDetails: "Hide Details",
+        
+        // Error messages
+        errorFetchingWeather: "Error fetching weather data. Please try again.",
+        errorFetchingHourly: "Error fetching hourly forecast data. Please try again."
     },
     es: {
         // Navigation translations
@@ -96,7 +141,52 @@ const translations = {
         tempUnit: "Unidad de Temperatura",
         language: "Idioma",
         saveSettings: "Guardar Configuración",
-        settingsSaved: "¡Configuración guardada con éxito!"
+        settingsSaved: "¡Configuración guardada con éxito!",
+        
+        // AQI and UV translations
+        airQualityIndex: "Índice de Calidad del Aire (ICA)",
+        uvIndex: "Índice UV",
+        aqiGood: "Bueno",
+        aqiModerate: "Moderado",
+        aqiUnhealthySensitive: "Insalubre para Grupos Sensibles",
+        aqiUnhealthy: "Insalubre",
+        aqiVeryUnhealthy: "Muy Insalubre",
+        aqiHazardous: "Peligroso",
+        uvLow: "Bajo",
+        uvModerate: "Moderado",
+        uvHigh: "Alto",
+        uvVeryHigh: "Muy Alto",
+        uvExtreme: "Extremo",
+        enableAQIUV: "Activar ICA y UV",
+        aqiAdvisory: "La calidad del aire es peligrosa. Evite actividades al aire libre.",
+        uvAdvisory: "Los niveles de UV son peligrosos. Use protector solar y limite la exposición al sol.",
+        dataUnavailable: "Datos no disponibles",
+        
+        // Feels Like translations
+        feelsLike: "Sensación Térmica",
+        enableFeelsLike: "Activar Sensación Térmica",
+        
+        // Weekly forecast translations
+        weeklyForecast: "Pronóstico Semanal",
+        
+        // Date and time translations
+        upcomingEvent: "Próximo",
+        timeUntilNext: "Tiempo hasta el próximo evento",
+        sunriseNextDay: "Amanecer (día siguiente)",
+        
+        // Location translations
+        useMyLocation: "Usar Mi Ubicación",
+        enterCity: "Ingrese ciudad",
+        dailyWeather: "Clima Diario",
+        noWeatherAlertsLocation: "No hay alertas meteorológicas para",
+        
+        // UI elements
+        moreDetails: "Más Detalles",
+        hideDetails: "Ocultar Detalles",
+        
+        // Error messages
+        errorFetchingWeather: "Error al obtener datos meteorológicos. Por favor, inténtelo de nuevo.",
+        errorFetchingHourly: "Error al obtener el pronóstico por hora. Por favor, inténtelo de nuevo."
     },
     fr: {
         // Navigation translations
@@ -143,7 +233,52 @@ const translations = {
         tempUnit: "Unité de Température",
         language: "Langue",
         saveSettings: "Enregistrer les Paramètres",
-        settingsSaved: "Paramètres enregistrés avec succès!"
+        settingsSaved: "Paramètres enregistrés avec succès!",
+        
+        // AQI and UV translations
+        airQualityIndex: "Indice de Qualité de l'Air (IQA)",
+        uvIndex: "Indice UV",
+        aqiGood: "Bon",
+        aqiModerate: "Modéré",
+        aqiUnhealthySensitive: "Malsain pour les Groupes Sensibles",
+        aqiUnhealthy: "Malsain",
+        aqiVeryUnhealthy: "Très Malsain",
+        aqiHazardous: "Dangereux",
+        uvLow: "Faible",
+        uvModerate: "Modéré",
+        uvHigh: "Élevé",
+        uvVeryHigh: "Très Élevé",
+        uvExtreme: "Extrême",
+        enableAQIUV: "Activer IQA et UV",
+        aqiAdvisory: "La qualité de l'air est dangereuse. Évitez les activités en plein air.",
+        uvAdvisory: "Les niveaux UV sont dangereux. Portez de la crème solaire et limitez l'exposition au soleil.",
+        dataUnavailable: "Données non disponibles",
+        
+        // Feels Like translations
+        feelsLike: "Ressenti",
+        enableFeelsLike: "Activer Température Ressentie",
+        
+        // Weekly forecast translations
+        weeklyForecast: "Prévisions Hebdomadaires",
+        
+        // Date and time translations
+        upcomingEvent: "À venir",
+        timeUntilNext: "Temps jusqu'au prochain événement",
+        sunriseNextDay: "Lever du soleil (jour suivant)",
+        
+        // Location translations
+        useMyLocation: "Utiliser Ma Position",
+        enterCity: "Entrez une ville",
+        dailyWeather: "Météo Quotidienne",
+        noWeatherAlertsLocation: "Pas d'alertes météo pour",
+        
+        // UI elements
+        moreDetails: "Plus de Détails",
+        hideDetails: "Masquer les Détails",
+        
+        // Error messages
+        errorFetchingWeather: "Erreur lors de la récupération des données météo. Veuillez réessayer.",
+        errorFetchingHourly: "Erreur lors de la récupération des prévisions horaires. Veuillez réessayer."
     },
     de: {
         // Navigation translations
@@ -190,7 +325,52 @@ const translations = {
         tempUnit: "Temperatureinheit",
         language: "Sprache",
         saveSettings: "Einstellungen Speichern",
-        settingsSaved: "Einstellungen erfolgreich gespeichert!"
+        settingsSaved: "Einstellungen erfolgreich gespeichert!",
+        
+        // AQI and UV translations
+        airQualityIndex: "Luftqualitätsindex (LQI)",
+        uvIndex: "UV-Index",
+        aqiGood: "Gut",
+        aqiModerate: "Mäßig",
+        aqiUnhealthySensitive: "Ungesund für empfindliche Gruppen",
+        aqiUnhealthy: "Ungesund",
+        aqiVeryUnhealthy: "Sehr Ungesund",
+        aqiHazardous: "Gefährlich",
+        uvLow: "Niedrig",
+        uvModerate: "Mäßig",
+        uvHigh: "Hoch",
+        uvVeryHigh: "Sehr Hoch",
+        uvExtreme: "Extrem",
+        enableAQIUV: "LQI und UV aktivieren",
+        aqiAdvisory: "Die Luftqualität ist gefährlich. Vermeiden Sie Aktivitäten im Freien.",
+        uvAdvisory: "Die UV-Werte sind gefährlich. Tragen Sie Sonnenschutz und begrenzen Sie die Sonnenexposition.",
+        dataUnavailable: "Daten nicht verfügbar",
+        
+        // Feels Like translations
+        feelsLike: "Gefühlt",
+        enableFeelsLike: "Gefühlte Temperatur aktivieren",
+        
+        // Weekly forecast translations
+        weeklyForecast: "Wochenvorhersage",
+        
+        // Date and time translations
+        upcomingEvent: "Bevorstehend",
+        timeUntilNext: "Zeit bis zum nächsten Ereignis",
+        sunriseNextDay: "Sonnenaufgang (nächster Tag)",
+        
+        // Location translations
+        useMyLocation: "Meinen Standort verwenden",
+        enterCity: "Stadt eingeben",
+        dailyWeather: "Tägliches Wetter",
+        noWeatherAlertsLocation: "Keine Wetterwarnungen für",
+        
+        // UI elements
+        moreDetails: "Mehr Details",
+        hideDetails: "Details ausblenden",
+        
+        // Error messages
+        errorFetchingWeather: "Fehler beim Abrufen der Wetterdaten. Bitte versuchen Sie es erneut.",
+        errorFetchingHourly: "Fehler beim Abrufen der stündlichen Vorhersage. Bitte versuchen Sie es erneut."
     }
 };
 
@@ -396,8 +576,6 @@ function translateText(key) {
     // Fallback to English if translation not found
     return translations.en[key] || key;
 }
-
-
 
 //exports
 module.exports = {translateText, formatTemperature, convertTemperature, applyTranslations, saveSettings, initSettings};

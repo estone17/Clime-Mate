@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clime-Mate</title>
     <link rel="stylesheet" href="AqiUV-style.css">
+    <script src="../javascript/settings.js"></script>
 </head>
 <body>
     <div id="weather-container">
         <!-- Wrap the title in a button -->
         <button id="reset-button" onclick="resetPage()">Clime-Mate</button>
         <input type="text" id="city" placeholder="Enter city">
-        <button onclick="getWeather()">Search</button>
+        <button id="search-button" onclick="getWeather()">Search</button>
         <!-- Geolocation button with ID -->
         <button id="geo-location" onclick="getWeatherByGeolocation()">Use My Location</button>
         <!-- Link to settings page -->
@@ -43,6 +44,55 @@
     <script src="aqi-uv.js"></script>
     <script src="aqi-uvDisplay.js"></script> <!-- Added script for aqi-uvDisplay.js -->
     <script>
+        // Function to update UI translations
+        function updateUITranslations() {
+            if (typeof translateText === 'function') {
+                // Update city input placeholder
+                const cityInput = document.getElementById('city');
+                if (cityInput) {
+                    cityInput.placeholder = translateText('enterCity');
+                }
+                
+                // Update buttons
+                const searchButton = document.getElementById('search-button');
+                if (searchButton) {
+                    searchButton.textContent = translateText('search');
+                }
+                
+                const geoLocationButton = document.getElementById('geo-location');
+                if (geoLocationButton) {
+                    geoLocationButton.textContent = translateText('useMyLocation');
+                }
+                
+                const settingsButton = document.getElementById('settings-button');
+                if (settingsButton) {
+                    settingsButton.textContent = translateText('settings');
+                }
+                
+                // Update toggle details button if visible
+                const toggleDetailsBtn = document.getElementById('toggle-details-btn');
+                if (toggleDetailsBtn && toggleDetailsBtn.style.display !== 'none') {
+                    toggleDetailsBtn.textContent = translateText('moreDetails');
+                }
+                
+                // Update feels like text if present
+                const feelsLikeElement = document.getElementById('feels-like');
+                if (feelsLikeElement && feelsLikeElement.textContent) {
+                    // Only update if it has content (the element exists but might be empty if the setting is off)
+                    if (feelsLikeElement.textContent.includes('Feels Like')) {
+                        const temp = feelsLikeElement.textContent.split(': ')[1];
+                        feelsLikeElement.textContent = `${translateText('feelsLike')}: ${temp}`;
+                    }
+                }
+            }
+        }
+        
+        // Apply translations when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wait for settings.js to load
+            setTimeout(updateUITranslations, 100);
+        });
+        
         function resetPage() {
             document.getElementById('city').value = ''; // Clear the input field
             document.getElementById('weather-icon').style.display = 'none'; // Hide the weather icon

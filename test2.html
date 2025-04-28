@@ -97,7 +97,7 @@
 
     <hr>
 
-    <h2 class="weekly-text">Weely Forecast</h2>
+    <h2 class="weekly-text" id="weekly-forecast-title">Weekly Forecast</h2>
      <!-- alert box -->
     <div class="alert alert-primary marginblock hidden" role="alert" id="weather-alert">
         Please fill in the location below to get weather data
@@ -158,6 +158,12 @@
             weatherAlertsTitle.textContent = translateText('weatherAlerts');
           }
           
+          // Update weekly forecast title
+          const weeklyForecastTitle = document.getElementById('weekly-forecast-title');
+          if (weeklyForecastTitle) {
+            weeklyForecastTitle.textContent = translateText('weeklyForecast');
+          }
+          
           // Update enable alerts label
           const enableAlertsLabel = document.getElementById('enable-alerts-label');
           if (enableAlertsLabel) {
@@ -195,6 +201,35 @@
           const settingsLink = document.querySelector('a.nav-link[href="settings.html"]');
           if (settingsLink) {
             settingsLink.textContent = translateText('settings');
+          }
+          
+          // Update AQI and Feels Like toggle labels
+          const feelsLikeToggleLabel = document.querySelector('.toggle-container span:first-child');
+          if (feelsLikeToggleLabel) {
+            feelsLikeToggleLabel.textContent = translateText('enableFeelsLike');
+          }
+          
+          const aqiToggleLabel = document.querySelector('.toggle-container span:last-of-type');
+          if (aqiToggleLabel) {
+            aqiToggleLabel.textContent = translateText('enableAQIUV');
+          }
+          
+          // Update Daily Weather button
+          const resetButton = document.getElementById('reset-button');
+          if (resetButton) {
+            resetButton.textContent = translateText('dailyWeather');
+          }
+          
+          // Update city input placeholder
+          const cityInput = document.getElementById('city');
+          if (cityInput) {
+            cityInput.placeholder = translateText('enterCity');
+          }
+          
+          // Update Use My Location button
+          const geoLocationButton = document.getElementById('geo-location');
+          if (geoLocationButton) {
+            geoLocationButton.textContent = translateText('useMyLocation');
           }
         }
       }

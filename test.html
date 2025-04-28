@@ -161,6 +161,16 @@
           if (settingsLink) {
             settingsLink.textContent = translateText('settings');
           }
+          
+          // Update any other UI elements that need translation
+          const feelsLikeElement = document.getElementById('feels-like');
+          if (feelsLikeElement && feelsLikeElement.textContent) {
+            // Only update if it has content (the element exists but might be empty if the setting is off)
+            if (feelsLikeElement.textContent.includes('Feels Like')) {
+              const temp = feelsLikeElement.textContent.split(': ')[1];
+              feelsLikeElement.textContent = `${translateText('feelsLike')}: ${temp}`;
+            }
+          }
         }
       }
       

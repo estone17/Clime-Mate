@@ -6,26 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clime-Mate Settings</title>
     <link rel="stylesheet" href="AqiUVSettings-style.css">
+    <script src="../javascript/settings.js"></script>
 </head>
 <body>
     <div id="settings-container">
         <button id="reset-button" onclick="window.location.href='aqi-uv.html'">Clime-Mate</button>
         <div class="toggle-container">
-            <span>Enable "Feels Like"</span>
+            <span id="feels-like-label">Enable "Feels Like"</span>
             <label class="toggle-switch">
                 <input type="checkbox" id="toggle-feels-like">
                 <span class="slider"></span>
             </label>
         </div>
         <div class="toggle-container">
-            <label for="alertToggle">Enable Weather Alerts</label>
+            <label for="alertToggle" id="weather-alerts-label">Enable Weather Alerts</label>
             <label class="toggle-switch">
                 <input type="checkbox" id="alert-toggle">
                 <span class="slider"></span>
             </label>
         </div>
         <div class="toggle-container">
-            <span>Enable AQI and UV </span>
+            <span id="aqi-uv-label">Enable AQI and UV</span>
             <label class ="toggle-switch">
                 <input type="checkbox" id="toggle-aqi">
                 <span class="slider"></span>
@@ -34,7 +35,39 @@
     </div>
 
     <script>
+        // Function to update UI translations
+        function updateUITranslations() {
+            if (typeof translateText === 'function') {
+                // Update page title
+                document.title = translateText('settingsTitle');
+                
+                // Update button text
+                const resetButton = document.getElementById('reset-button');
+                if (resetButton) {
+                    resetButton.textContent = 'Clime-Mate';
+                }
+                
+                // Update toggle labels
+                const feelsLikeLabel = document.getElementById('feels-like-label');
+                if (feelsLikeLabel) {
+                    feelsLikeLabel.textContent = translateText('enableFeelsLike');
+                }
+                
+                const weatherAlertsLabel = document.getElementById('weather-alerts-label');
+                if (weatherAlertsLabel) {
+                    weatherAlertsLabel.textContent = translateText('enableAlerts');
+                }
+                
+                const aqiUvLabel = document.getElementById('aqi-uv-label');
+                if (aqiUvLabel) {
+                    aqiUvLabel.textContent = translateText('enableAQIUV');
+                }
+            }
+        }
+        
         document.addEventListener('DOMContentLoaded', function() {
+            // Apply translations
+            setTimeout(updateUITranslations, 100);
             const toggleFeelsLike = document.getElementById('toggle-feels-like');
             const toggleWeatherAlerts = document.getElementById('alert-toggle');
             const toggleAQI = document.getElementById('toggle-aqi');

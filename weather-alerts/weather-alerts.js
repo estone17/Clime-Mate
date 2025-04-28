@@ -48,7 +48,7 @@ function handleWeatherAlerts(data) {
     alertBox.innerHTML = ""; // Clear previous messages
 
     if (!data || !data.alerts || data.alerts.length === 0) {
-        const noAlertsMessage = typeof translateText === 'function' ? translateText('noAlerts') : "There are currently no weather alerts.";
+        const noAlertsMessage = translateText('noAlerts');
         displayAlertMessage(noAlertsMessage);
         showNotification(noAlertsMessage);
         return;

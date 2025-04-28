@@ -294,6 +294,52 @@ function translateWeatherDescription(description) {
             es: 'calima',
             fr: 'brume sèche',
             de: 'Dunst'
+        },
+        // Additional weather conditions
+        'drizzle': {
+            es: 'llovizna',
+            fr: 'bruine',
+            de: 'Nieselregen'
+        },
+        'freezing rain': {
+            es: 'lluvia helada',
+            fr: 'pluie verglaçante',
+            de: 'Eisregen'
+        },
+        'sleet': {
+            es: 'aguanieve',
+            fr: 'grésil',
+            de: 'Graupel'
+        },
+        'dust': {
+            es: 'polvo',
+            fr: 'poussière',
+            de: 'Staub'
+        },
+        'sand': {
+            es: 'arena',
+            fr: 'sable',
+            de: 'Sand'
+        },
+        'smoke': {
+            es: 'humo',
+            fr: 'fumée',
+            de: 'Rauch'
+        },
+        'volcanic ash': {
+            es: 'ceniza volcánica',
+            fr: 'cendre volcanique',
+            de: 'Vulkanasche'
+        },
+        'squalls': {
+            es: 'chubascos',
+            fr: 'grains',
+            de: 'Böen'
+        },
+        'tornado': {
+            es: 'tornado',
+            fr: 'tornade',
+            de: 'Tornado'
         }
     };
     
@@ -355,6 +401,147 @@ function translateWeatherDescription(description) {
             es: "La geolocalización no es compatible con este navegador.",
             fr: "La géolocalisation n'est pas prise en charge par ce navigateur.",
             de: "Die Geolokalisierung wird von diesem Browser nicht unterstützt."
+        },
+        // AQI and UV translations
+        airQualityIndex: {
+            en: "Air Quality Index (AQI)",
+            es: "Índice de Calidad del Aire (ICA)",
+            fr: "Indice de Qualité de l'Air (IQA)",
+            de: "Luftqualitätsindex (LQI)"
+        },
+        uvIndex: {
+            en: "UV Index",
+            es: "Índice UV",
+            fr: "Indice UV",
+            de: "UV-Index"
+        },
+        aqiGood: {
+            en: "Good",
+            es: "Bueno",
+            fr: "Bon",
+            de: "Gut"
+        },
+        aqiModerate: {
+            en: "Moderate",
+            es: "Moderado",
+            fr: "Modéré",
+            de: "Mäßig"
+        },
+        aqiUnhealthySensitive: {
+            en: "Unhealthy for Sensitive Groups",
+            es: "Insalubre para Grupos Sensibles",
+            fr: "Malsain pour les Groupes Sensibles",
+            de: "Ungesund für empfindliche Gruppen"
+        },
+        aqiUnhealthy: {
+            en: "Unhealthy",
+            es: "Insalubre",
+            fr: "Malsain",
+            de: "Ungesund"
+        },
+        aqiVeryUnhealthy: {
+            en: "Very Unhealthy",
+            es: "Muy Insalubre",
+            fr: "Très Malsain",
+            de: "Sehr Ungesund"
+        },
+        aqiHazardous: {
+            en: "Hazardous",
+            es: "Peligroso",
+            fr: "Dangereux",
+            de: "Gefährlich"
+        },
+        uvLow: {
+            en: "Low",
+            es: "Bajo",
+            fr: "Faible",
+            de: "Niedrig"
+        },
+        uvModerate: {
+            en: "Moderate",
+            es: "Moderado",
+            fr: "Modéré",
+            de: "Mäßig"
+        },
+        uvHigh: {
+            en: "High",
+            es: "Alto",
+            fr: "Élevé",
+            de: "Hoch"
+        },
+        uvVeryHigh: {
+            en: "Very High",
+            es: "Muy Alto",
+            fr: "Très Élevé",
+            de: "Sehr Hoch"
+        },
+        uvExtreme: {
+            en: "Extreme",
+            es: "Extremo",
+            fr: "Extrême",
+            de: "Extrem"
+        },
+        aqiAdvisory: {
+            en: "Air quality is hazardous. Avoid outdoor activities.",
+            es: "La calidad del aire es peligrosa. Evite actividades al aire libre.",
+            fr: "La qualité de l'air est dangereuse. Évitez les activités en plein air.",
+            de: "Die Luftqualität ist gefährlich. Vermeiden Sie Aktivitäten im Freien."
+        },
+        uvAdvisory: {
+            en: "UV levels are dangerous. Wear sunscreen and limit sun exposure.",
+            es: "Los niveles de UV son peligrosos. Use protector solar y limite la exposición al sol.",
+            fr: "Les niveaux UV sont dangereux. Portez de la crème solaire et limitez l'exposition au soleil.",
+            de: "Die UV-Werte sind gefährlich. Tragen Sie Sonnenschutz und begrenzen Sie die Sonnenexposition."
+        },
+        dataUnavailable: {
+            en: "Data unavailable",
+            es: "Datos no disponibles",
+            fr: "Données non disponibles",
+            de: "Daten nicht verfügbar"
+        },
+        // Date and time translations
+        upcomingEvent: {
+            en: "Upcoming",
+            es: "Próximo",
+            fr: "À venir",
+            de: "Bevorstehend"
+        },
+        timeUntilNext: {
+            en: "Time until next event",
+            es: "Tiempo hasta el próximo evento",
+            fr: "Temps jusqu'au prochain événement",
+            de: "Zeit bis zum nächsten Ereignis"
+        },
+        sunriseNextDay: {
+            en: "Sunrise (next day)",
+            es: "Amanecer (día siguiente)",
+            fr: "Lever du soleil (jour suivant)",
+            de: "Sonnenaufgang (nächster Tag)"
+        },
+        // Location translations
+        useMyLocation: {
+            en: "Use My Location",
+            es: "Usar Mi Ubicación",
+            fr: "Utiliser Ma Position",
+            de: "Meinen Standort verwenden"
+        },
+        enterCity: {
+            en: "Enter city",
+            es: "Ingrese ciudad",
+            fr: "Entrez une ville",
+            de: "Stadt eingeben"
+        },
+        dailyWeather: {
+            en: "Daily Weather",
+            es: "Clima Diario",
+            fr: "Météo Quotidienne",
+            de: "Tägliches Wetter"
+        },
+        noWeatherAlertsLocation: {
+            en: "No weather alerts for",
+            es: "No hay alertas meteorológicas para",
+            fr: "Pas d'alertes météo pour",
+            de: "Keine Wetterwarnungen für"
         }
     };
     

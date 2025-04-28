@@ -4,7 +4,7 @@ function getWeather() {
     const city = document.getElementById('city').value.trim();
 
     if (!city) {
-        alert('Please enter a city');
+        alert(translateText('enterCity'));
         return;
     }
 
@@ -25,7 +25,7 @@ function getWeather() {
         })
         .catch(error => {
             console.error('Error fetching current weather data:', error);
-            alert('Error fetching current weather data. Please try again.');
+            alert(translateText('errorFetchingWeather'));
         });
 
     updateFeelsLike(); // Ensure this function is called
@@ -54,10 +54,10 @@ function getWeatherByGeolocation() {
                     alert('Error fetching current weather data. Please try again.');
                 });
         }, function (error) {
-            alert('Geolocation error: ' + error.message);
+            alert(translateText('geolocationError') + ': ' + error.message);
         });
     } else {
-        alert('Geolocation is not supported by this browser.');
+        alert(translateText('geolocationNotSupported'));
     }
 
     updateFeelsLikeByGeolocation(); // Added call to update "Feels Like" temperature using geolocation
@@ -160,10 +160,10 @@ function toggleDetails() {
     // Toggle the visibility of the details section
     if (details.style.display === 'none') {
         details.style.display = 'block';
-        button.textContent = 'Hide Details';
+        button.textContent = translateText('hideDetails');
     } else {
         details.style.display = 'none';
-        button.textContent = 'More Details';
+        button.textContent = translateText('moreDetails');
     }
 
     // Ensure the city 
@@ -181,22 +181,22 @@ function showImage() {
 
 // Function to categorize AQI values
 function getAQICategory(aqi) {
-    if (aqi <= 50) return { category: 'Good', color: 'green' };
-    if (aqi <= 100) return { category: 'Moderate', color: 'yellow' };
-    if (aqi <= 150) return { category: 'Unhealthy for Sensitive Groups', color: 'orange' };
-    if (aqi <= 200) return { category: 'Unhealthy', color: 'red' };
-    if (aqi <= 300) return { category: 'Very Unhealthy', color: 'purple' };
-    if (aqi > 300) return { category: 'Hazardous', color: 'maroon' };
+    if (aqi <= 50) return { category: translateText('aqiGood'), color: 'green' };
+    if (aqi <= 100) return { category: translateText('aqiModerate'), color: 'yellow' };
+    if (aqi <= 150) return { category: translateText('aqiUnhealthySensitive'), color: 'orange' };
+    if (aqi <= 200) return { category: translateText('aqiUnhealthy'), color: 'red' };
+    if (aqi <= 300) return { category: translateText('aqiVeryUnhealthy'), color: 'purple' };
+    if (aqi > 300) return { category: translateText('aqiHazardous'), color: 'maroon' };
     return { category: 'N/A', color: 'gray' };
 }
 
 // Function to categorize UV index values
 function getUVCategory(uv) {
-    if (uv <= 2) return { category: 'Low', color: 'green' };
-    if (uv <= 5) return { category: 'Moderate', color: 'yellow' };
-    if (uv <= 7) return { category: 'High', color: 'orange' };
-    if (uv <= 10) return { category: 'Very High', color: 'red' };
-    if (uv > 10) return { category: 'Extreme', color: 'purple' };
+    if (uv <= 2) return { category: translateText('uvLow'), color: 'green' };
+    if (uv <= 5) return { category: translateText('uvModerate'), color: 'yellow' };
+    if (uv <= 7) return { category: translateText('uvHigh'), color: 'orange' };
+    if (uv <= 10) return { category: translateText('uvVeryHigh'), color: 'red' };
+    if (uv > 10) return { category: translateText('uvExtreme'), color: 'purple' };
     return { category: 'N/A', color: 'gray' };
 }
 
@@ -263,7 +263,7 @@ async function displayWeather(data) {
         const feelsLikeTemp = Math.round(data.main.feels_like);
         const showFeelsLike = localStorage.getItem('showFeelsLike') === 'true';
         if (showFeelsLike) {
-            document.getElementById('feels-like').innerText = `Feels Like: ${feelsLikeTemp}°F`;
+            document.getElementById('feels-like').innerText = `${translateText('feelsLike')}: ${feelsLikeTemp}°F`;
         } else {
             document.getElementById('feels-like').innerText = '';
         }
@@ -282,10 +282,10 @@ async function displayWeather(data) {
 
         // Add sunrise, sunset, and upcoming event details
         detailsContent.innerHTML += `
-            <p>🌞 Sunrise: ${sunrise}</p>
-            <p>🌙 Sunset: ${sunset}</p>
-            <p>Upcoming: ${upcomingEvent.name}</p>
-            <p>Time until next event: ${upcomingEvent.timeUntil}</p>
+            <p>🌞 ${translateText('sunrise')}: ${sunrise}</p>
+            <p>🌙 ${translateText('sunset')}: ${sunset}</p>
+            <p>${translateText('upcomingEvent')}: ${translateText(upcomingEvent.name.toLowerCase())}</p>
+            <p>${translateText('timeUntilNext')}: ${upcomingEvent.timeUntil}</p>
         `;
 
         // Fetch AQI, UV, and weather alerts if the toggle is enabled
@@ -304,25 +304,25 @@ async function displayWeather(data) {
 
                 detailsContent.innerHTML += `
                     <p style="color: ${aqiCategory.color};">
-                        🌫️ Air Quality Index (AQI): ${aqiUvData.aqi !== 'N/A' ? `${aqiUvData.aqi} (${aqiCategory.category})` : 'Data unavailable'}
+                        🌫️ ${translateText('airQualityIndex')}: ${aqiUvData.aqi !== 'N/A' ? `${aqiUvData.aqi} (${aqiCategory.category})` : translateText('dataUnavailable')}
                     </p>
                     <div class="color-bar" style="background: ${aqiCategory.color};"></div>
                 `;
                 if (aqiCategory.category === 'Unhealthy' || aqiCategory.category === 'Very Unhealthy' || aqiCategory.category === 'Hazardous') {
                     detailsContent.innerHTML += `
-                        <p class="advisory-message">⚠️ Air quality is hazardous. Avoid outdoor activities.</p>
+                        <p class="advisory-message">⚠️ ${translateText('aqiAdvisory')}</p>
                     `;
                 }
 
                 detailsContent.innerHTML += `
                     <p style="color: ${uvCategory.color};">
-                        ☀️ UV Index: ${aqiUvData.uv !== 'N/A' ? `${aqiUvData.uv} (${uvCategory.category})` : 'Data unavailable'}
+                        ☀️ ${translateText('uvIndex')}: ${aqiUvData.uv !== 'N/A' ? `${aqiUvData.uv} (${uvCategory.category})` : translateText('dataUnavailable')}
                     </p>
                     <div class="color-bar" style="background: ${uvCategory.color};"></div>
                 `;
                 if (uvCategory.category === 'Very High' || uvCategory.category === 'Extreme') {
                     detailsContent.innerHTML += `
-                        <p class="advisory-message">⚠️ UV levels are dangerous. Wear sunscreen and limit sun exposure.</p>
+                        <p class="advisory-message">⚠️ ${translateText('uvAdvisory')}</p>
                     `;
                 }
             }
@@ -340,14 +340,14 @@ async function displayWeather(data) {
                     `;
                 });
             } else if (showWeatherAlerts) {
-                detailsContent.innerHTML += `<p>No weather alerts for ${cityName}.</p>`;
+                detailsContent.innerHTML += `<p>${translateText('noWeatherAlertsLocation')} ${cityName}.</p>`;
             }
         }
 
         const detailsButton = document.getElementById('toggle-details-btn');
         detailsButton.style.display = 'inline-block';
         document.getElementById('details-content').style.display = 'none';
-        detailsButton.textContent = 'More Details';
+        detailsButton.textContent = translateText('moreDetails') || 'More Details';
 
         showImage();
     }
@@ -369,7 +369,7 @@ function getHourlyForecast(lat, lon) {
         })
         .catch(error => {
             console.error('Error fetching hourly forecast data:', error);
-            alert('Error fetching hourly forecast data. Please try again.');
+            alert(translateText('errorFetchingHourly'));
         });
 }
 
